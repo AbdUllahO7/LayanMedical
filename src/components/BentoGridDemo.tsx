@@ -15,6 +15,9 @@ import { Button } from "./ui/button";
 export function BentoGridDemo() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+       <div className="mx-auto mb-10 text-center">
+        <h2 className="font-bold text-3xl text-[#137E8C]">Products</h2>
+      </div>
       <BentoGrid className="max-w-4xl mx-auto">
         {items.map((item, i) => (
           <BentoGridItem
