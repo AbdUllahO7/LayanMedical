@@ -19,7 +19,7 @@ export function ContactInfo() {
           Contact Us
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          We're here to help and answer any question you might have. We look forward to hearing from you!
+          We&apos;re here to help and answer any question you might have. We look forward to hearing from you!
         </p>
         <Card className="">
           <CardContent className="p-6">

@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import React from "react";
 import {
   IconArrowWaveRightUp,
@@ -10,9 +9,9 @@ import {
   IconTableColumn,
 } from "@tabler/icons-react";
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
-import { Button } from "./ui/button";
+import Link from "next/link";
 
-export function BentoGridDemo() {
+export function BentoGridDemo({showButton} : {showButton : boolean}) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
        <div className="mx-auto mb-10 text-center">
@@ -20,7 +19,9 @@ export function BentoGridDemo() {
       </div>
       <BentoGrid className="max-w-4xl mx-auto">
         {items.map((item, i) => (
-          <BentoGridItem
+          
+          <Link href={`/products/productDetails/${item.id}`} key={item.id}>
+           <BentoGridItem
             key={i}
             title={item.title}
             description={item.description}
@@ -28,12 +29,18 @@ export function BentoGridDemo() {
             icon={item.icon}
             className={i === 3 || i === 6 ? "md:col-span-2" : ""}
           />
+          </Link>
         ))}
       </BentoGrid>
       <div className="mt-10">
-        <Button className="font-bold text-xl hover:bg-logoColor hover:text-white bg-[#137E8C]">
-          Show All
-        </Button>
+        {
+          showButton &&  (
+        <Link href="/products" className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-[#137E8C]">
+            Show All
+        </Link>
+          ) 
+        }
+        
       </div>
     </div>
   );
@@ -45,24 +52,31 @@ const Skeleton = () => (
 
 const items = [
   {
+    id:1,
     title: "The Dawn of Innovation",
     description: "Explore the birth of groundbreaking ideas and inventions.",
     header: <Skeleton />,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:2,
+
     title: "The Digital Revolution",
     description: "Dive into the transformative power of technology.",
     header: <Skeleton />,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:3,
+
     title: "The Art of Design",
     description: "Discover the beauty of thoughtful and functional design.",
     header: <Skeleton />,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:4,
+
     title: "The Power of Communication",
     description:
       "Understand the impact of effective communication in our lives.",
@@ -70,18 +84,23 @@ const items = [
     icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:5,
+
     title: "The Pursuit of Knowledge",
     description: "Join the quest for understanding and enlightenment.",
     header: <Skeleton />,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:6,
+
     title: "The Joy of Creation",
     description: "Experience the thrill of bringing ideas to life.",
     header: <Skeleton />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
   },
   {
+    id:7,
     title: "The Spirit of Adventure",
     description: "Embark on exciting journeys and thrilling discoveries.",
     header: <Skeleton />,
