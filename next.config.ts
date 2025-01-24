@@ -2,18 +2,8 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      'example.com',
-      'assets.aceternity.com', // Add the hostname here
-    ],
+    domains: ['example.com'], // Still needed if you're using "domains" for some hosts
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'assets.example.com',
-        port: '',
-        pathname: '/account123/**',
-        search: '',
-      },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
@@ -27,20 +17,26 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "cdn.pixabay.com",
+        protocol: 'https',
+        hostname: 'cdn.pixabay.com',
+        port: '',
+        pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "img.freepik.com",
+        protocol: 'https',
+        hostname: 'img.freepik.com',
+        port: '',
+        pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "cdn-icons-png.flaticon.com",
+        protocol: 'https',
+        hostname: 'cdn-icons-png.flaticon.com',
+        port: '',
+        pathname: '/**',
       },
       {
-        protocol: "https", // Add a remotePattern for assets.aceternity.com if needed
-        hostname: "assets.aceternity.com",
+        protocol: 'https',
+        hostname: 'assets.aceternity.com', // Add this entry
         port: '',
         pathname: '/**',
       },
