@@ -1,22 +1,15 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
+import { MapPin, Phone, Mail } from "lucide-react"
 import { motion } from "framer-motion"
+import { FloatingDockDemo } from "./FloatingDockDemo"
 
 export function ContactInfo() {
   const contactItems = [
     { icon: MapPin, title: "Address", content: "123 Main St, Anytown, ST 12345" },
     { icon: Phone, title: "Phone", content: "(123) 456-7890" },
     { icon: Mail, title: "Email", content: "contact@example.com" },
-  ]
-
-  const socialLinks = [
-    { icon: Facebook, href: "https://facebook.com" },
-    { icon: Twitter, href: "https://twitter.com" },
-    { icon: Instagram, href: "https://instagram.com" },
-    { icon: Linkedin, href: "https://linkedin.com" },
   ]
 
   return (
@@ -54,14 +47,7 @@ export function ContactInfo() {
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Follow Us</h2>
           <div className="flex space-x-4">
-            {socialLinks.map((link, index) => (
-              <Button key={index} variant="outline" size="icon" asChild>
-                <a href={link.href} target="_blank" rel="noopener noreferrer">
-                  <link.icon className="h-5 w-5" />
-                  <span className="sr-only">{link.icon.name}</span>
-                </a>
-              </Button>
-            ))}
+              <FloatingDockDemo/>
           </div>
         </div>
       </div>

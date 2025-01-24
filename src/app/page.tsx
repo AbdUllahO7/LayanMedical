@@ -12,10 +12,10 @@ export default function Home() {
         <NavbarDemo />
         <HeroHighlightDemo />
         <Category/>
-        {/* <BentoGridDemo/>
+        <BentoGridDemo/>
         <CardHoverEffectDemo/>
         <ContactInfo/>
-        <Footer/> */}
+        <Footer/>
     </div>
   );
 }

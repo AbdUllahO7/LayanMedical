@@ -10,13 +10,14 @@ export const HoverEffect = ({
   className,
 }: {
   items: {
+    icon : React.ReactElement ,
     title: string;
     description: string;
     link: string;
   }[];
   className?: string;
 }) => {
-  let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div
@@ -51,7 +52,8 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card className="bg-lightColor">
-            <CardTitle className="text-xl">{item.title}</CardTitle>
+          <CardTitle className="text-xl">{item.icon}</CardTitle>
+          <CardTitle className="text-xl">{item.title}</CardTitle>
             <CardDescription className="text-gray-50">{item.description}</CardDescription>
           </Card>
         </Link>
