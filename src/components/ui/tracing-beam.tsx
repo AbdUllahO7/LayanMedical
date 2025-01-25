@@ -2,9 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
-  useTransform,
   useScroll,
-  useSpring,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -39,20 +37,7 @@ export const TracingBeam = ({
     };
   }, []);
 
-  const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, svgHeight]),
-    {
-      stiffness: 500,
-      damping: 90,
-    }
-  );
-  const y2 = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, svgHeight]),
-    {
-      stiffness: 500,
-      damping: 90,
-    }
-  );
+
 
   return (
     <motion.div

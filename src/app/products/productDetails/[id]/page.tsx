@@ -8,6 +8,8 @@ const ProductDetails = () => {
   // Destructure the `id` parameter from `useParams`
     const { id } = useParams();
 
+    console.log(id);
+
   return (
         <div className='mt-[100px]'>
           <TracingBeamDemo /> 
