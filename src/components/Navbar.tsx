@@ -35,13 +35,11 @@ function Navbar({ className }: { className?: string }) {
         <Link href="/" className="text-white">
           Home
         </Link>
-       
         <Link href="/" className="text-white">
-          Home
+          Products
         </Link>
-
         <Link href="/" className="text-white">
-          Home
+          Category
         </Link>
 
         </div>
