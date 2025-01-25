@@ -5,6 +5,8 @@ const AdminCategories = () => {
         <div>
             Categories
             Categories
+            Categories
+
         </div>
     )
 }
