@@ -1,5 +1,6 @@
 'use client'
 
+import { TracingBeamDemo } from '@/components/Products/productDetails/TracingBeamDemo';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
@@ -8,9 +9,8 @@ const ProductDetails = () => {
     const { id } = useParams();
 
   return (
-        <div>
-        <h1>Product Detail</h1>
-        <p>Product ID: {id}</p>
+        <div className='mt-[100px]'>
+          <TracingBeamDemo /> 
         </div>
   );
 };
