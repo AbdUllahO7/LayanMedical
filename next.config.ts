@@ -2,8 +2,13 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['example.com'], // Still needed if you're using "domains" for some hosts
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',  // Make sure this is correct
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
@@ -36,15 +41,22 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'assets.aceternity.com', // Add this entry
+        hostname: 'assets.aceternity.com',
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Add this entry for Unsplash
+        hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
+      },
+
+      {
+        protocol: 'http', // Local development (localhost)
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/uploads/**',
       },
     ],
   },

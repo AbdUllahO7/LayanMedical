@@ -4,7 +4,10 @@ import axios from "axios";
 interface Products {
     _id: string;
     title: string;
-    description : string
+    description: string;
+    category: string[]; // Category IDs
+    features: string[];
+    listImages: string[];
 }
 
 interface ProductsState {
@@ -21,18 +24,9 @@ interface FetchAllProductsParams {
     limit?: number;
 }
 
-interface FetchAllAcceptProductsParams {
-    filterParams?: Record<string, any> | null;
-    sort?: string | null;
-    search: string;
-    page?: number;
-    limit?: number;
-}
-
 interface CreateOrUpdateProductsParams {
     formData: Record<string, any>;
-    selectedCategoryIds: string[];
-    selectedSubCategoryIds: string[];
+    selectedCategoryIds: string[]; // Category IDs
 }
 
 const initialState: ProductsState = {
@@ -45,83 +39,62 @@ const initialState: ProductsState = {
 // Async Thunks for ProductsAndService routes
 export const fetchAllProducts = createAsyncThunk(
     '/Products/fetchAll',
-    async ({ sort, search, page = 1, limit = 100 }: FetchAllProductsParams) => {
-        const query = new URLSearchParams({
-        sort: sort || '',
-        search: search || '',
-        page: page.toString(),
-        limit: limit.toString(),
-        }).toString();
-
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}Products?${query}`);
+    async () => {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`);
         return response.data;
     }
 );
 
-
-
 export const fetchProductsById = createAsyncThunk(
-  '/Products/fetchById',
-  async (id: string) => {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}Products/${id}`);
-    return response.data;
-  }
+    '/Products/fetchById',
+    async (id: string) => {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`);
+        return response.data;
+    }
 );
 
 export const createProducts = createAsyncThunk(
-  '/Products/create',
-  async ({ formData, selectedCategoryIds, selectedSubCategoryIds }: CreateOrUpdateProductsParams) => {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}Products`,
-      {
-        ...formData,
-        category: selectedCategoryIds,
-        subCategory: selectedSubCategoryIds,
-      },
-      { withCredentials: true }
-    );
-    return response.data;
-  }
+    '/Products/create',
+    async ({ formData, selectedCategoryIds }: CreateOrUpdateProductsParams) => {
+        const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`,
+            {
+                ...formData,
+                category: selectedCategoryIds,
+            },
+            { withCredentials: true }
+        );
+        return response.data;
+    }
 );
 
 export const updateProducts = createAsyncThunk(
-  '/Products/update',
-  async ({ id, formData, selectedCategoryIds, selectedSubCategoryIds }: { id: string } & CreateOrUpdateProductsParams) => {
-    const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}Products/${id}`,
-      {
-        ...formData,
-        category: selectedCategoryIds,
-        subCategory: selectedSubCategoryIds,
-      },
-      { withCredentials: true }
-    );
-    return response.data;
-  }
+    '/Products/update',
+    async ({ id, formData, selectedCategoryIds }: { id: string } & CreateOrUpdateProductsParams) => {
+        const response = await axios.put(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`,
+            {
+                ...formData,
+                category: selectedCategoryIds,
+            },
+            { withCredentials: true }
+        );
+        return response.data;
+    }
 );
 
 export const deleteProducts = createAsyncThunk(
-  '/Products/delete',
-  async (id: string) => {
-    const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}Products/${id}`, {
-      withCredentials: true,
-    });
-    return response.data;
-  }
+    '/Products/delete',
+    async (id: string) => {
+        const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`, {
+            withCredentials: true,
+        });
+        return response.data;
+    }
 );
 
-export const fetchProductsByUserId = createAsyncThunk(
-  '/Products/fetchProductsByUserId',
-  async (userId: string) => {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}Products/getProductsByUserId/${userId}`);
-    return response.data;
-  }
-);
-
-
-
-const ProductsServiceSlice = createSlice({
-  name: 'ProductsService',
+const ProductsSlice = createSlice({
+  name: 'Products',
   initialState,
   reducers: {
     setDetails: (state) => {
@@ -130,7 +103,7 @@ const ProductsServiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch All Productses
+      // Fetch All Products
       .addCase(fetchAllProducts.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -196,23 +169,10 @@ const ProductsServiceSlice = createSlice({
       .addCase(deleteProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      })
-      // Fetch Products by UserId
-      .addCase(fetchProductsByUserId.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchProductsByUserId.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.ProductsList = action.payload.data;
-      })
-      .addCase(fetchProductsByUserId.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
       });
   },
 });
 
-export const { setDetails } = ProductsServiceSlice.actions;
+export const { setDetails } = ProductsSlice.actions;
 
-export default ProductsServiceSlice.reducer;
+export default ProductsSlice.reducer;

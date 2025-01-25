@@ -4,12 +4,15 @@ import { SignupFormDemo } from '@/components/admin/SignupFormDemo'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from '../../../store';
+import { Toaster } from '@/components/ui/toaster';
 
 const Admin = () => {
 
     return (
         <Provider store={store}>
             <SignupFormDemo />
+            <Toaster/>
+            
         </Provider>
     )
 }
