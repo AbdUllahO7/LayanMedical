@@ -6,7 +6,7 @@ import { ImagesSliderDemo } from "@/components/ImagesSliderDemo";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="w-full">
         <ImagesSliderDemo/>
         <Category showButton={true}/>
         <BentoGridDemo showButton={true}/>
