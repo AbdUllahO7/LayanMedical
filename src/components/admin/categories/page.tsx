@@ -4,9 +4,6 @@ const AdminCategories = () => {
     return (
         <div>
             Categories
-            Categories
-            Categories
-
         </div>
     )
 }
