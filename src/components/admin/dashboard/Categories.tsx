@@ -129,9 +129,9 @@ const Categories: React.FC = () => {
       </div>
 
       {/* List of Categories */}
-      <div className='flex flex-wrap justify-center items-center gap-4 mt-4'>
+      <div className='flex flex-wrap justify-center items-center gap-4 mt-4 '>
         {categories.map((category: any) => (
-          <Card key={category._id}>
+          <Card key={category._id} className='w-[300px] text-center flex flex-col justify-items-center items-center gap-2'>
           <CardHeader>
             <CardTitle>
               {category.image && (
@@ -146,7 +146,7 @@ const Categories: React.FC = () => {
             </CardTitle>
             <CardDescription>{category.title}</CardDescription>
           </CardHeader>
-          <DialogFooter className="flex justify-between">
+          <DialogFooter className="flex justify-center items-center  pb-2 gap-2">
             <Button variant="outline" onClick={() => handleDelete(category._id)}>
               Delete
             </Button>
