@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import store from '../../../store';
 import { Toaster } from '@/components/ui/toaster';
 
-const Admin = () => {
+const page = () => {
 
     return (
         <Provider store={store}>
@@ -17,4 +17,4 @@ const Admin = () => {
     )
 }
 
-export default Admin
+export default page
