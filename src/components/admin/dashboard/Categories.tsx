@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../../../store';
+import { AppDispatch, RootState } from '../../../../store';
 import { fetchCategories, createCategory, updateCategory, deleteCategory } from '../../../../store/admin/CategoriesSlice';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
