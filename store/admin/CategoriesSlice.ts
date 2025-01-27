@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Define the Category type
 interface Category {
-    id: string;
+    _id: string;
     title: string;
     image?: string;
 }
@@ -107,7 +107,7 @@ const categoriesSlice = createSlice({
         })
         // Handle updateCategory
         .addCase(updateCategory.fulfilled, (state, action: PayloadAction<Category>) => {
-            const index = state.categories.findIndex((cat) => cat.id === action.payload.id);
+            const index = state.categories.findIndex((cat) => cat._id === action.payload._id);
             if (index !== -1) {
             state.categories[index] = action.payload;
             }
@@ -117,7 +117,7 @@ const categoriesSlice = createSlice({
         })
         // Handle deleteCategory
         .addCase(deleteCategory.fulfilled, (state, action: PayloadAction<string>) => {
-            state.categories = state.categories.filter((cat) => cat.id !== action.payload);
+            state.categories = state.categories.filter((cat) => cat._id !== action.payload);
         })
         .addCase(deleteCategory.rejected, (state, action) => {
             state.error = action.payload as string;
