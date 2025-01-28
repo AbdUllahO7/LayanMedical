@@ -28,7 +28,7 @@ export const fetchCategories = createAsyncThunk<Category[]>(
     'categories/fetchCategories',
     async (_, { rejectWithValue }) => {
         try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/getAllCategories`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/Categories/getAllCategories`);
         return response.data.data; // Assuming the data is in the `data` field of the response
         } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories');
@@ -41,7 +41,7 @@ export const createCategory = createAsyncThunk<Category, { title: string; image?
     'categories/createCategory',
     async (categoryData, { rejectWithValue }) => {
         try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/createCategory`, categoryData);
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/Categories/createCategory`, categoryData);
         return response.data.data; // Assuming the data is in the `data` field of the response
         } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || 'Failed to create category');
@@ -57,7 +57,7 @@ export const updateCategory = createAsyncThunk<
     'categories/updateCategory',
     async ({ id, title, image }, { rejectWithValue }) => {
         try {
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/updateCategory/${id}`, { title, image });
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/Categories/updateCategory/${id}`, { title, image });
         return response.data.data; // Assuming the data is in the `data` field of the response
         } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || 'Failed to update category');
@@ -70,7 +70,7 @@ export const deleteCategory = createAsyncThunk<string, string>(
     'categories/deleteCategory',
     async (id, { rejectWithValue }) => {
         try {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/deleteCategory/${id}`);
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/Categories/deleteCategory/${id}`);
         return id; // Return the ID of the deleted category
         } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || 'Failed to delete category');

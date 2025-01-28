@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
     async (formData: { email: string; password: string }, { rejectWithValue }) => {
         try {
             const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}auth/login`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`,
             formData,
             { withCredentials: true }
             );
@@ -49,7 +49,7 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth/",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}auth/check-auth`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/check-auth`, {
         withCredentials: true,
         headers: {
           "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -68,7 +68,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}auth/logout`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
       );

@@ -160,18 +160,23 @@ export const SidebarLink = ({
   className,
   ...props
 }: {
-  link: Links;
+  link: Links & { onClick?: () => void }; // Add onClick type here
   className?: string;
   props?: LinkProps;
 }) => {
   const { open, animate } = useSidebar();
+
   return (
     <Link
       href={link.href}
       className={cn(
-        "flex items-center justify-start gap-2  group/sidebar py-2",
+        "flex items-center justify-start gap-2 group/sidebar py-2",
         className
       )}
+      onClick={(e) => {
+        e.preventDefault(); // Prevent the default anchor behavior
+        link.onClick?.(); // Call the onClick handler if it exists
+      }}
       {...props}
     >
       {link.icon}

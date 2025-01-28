@@ -40,7 +40,7 @@ const initialState: ProductsState = {
 export const fetchAllProducts = createAsyncThunk(
     '/Products/fetchAll',
     async () => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes`);
         return response.data;
     }
 );
@@ -48,7 +48,7 @@ export const fetchAllProducts = createAsyncThunk(
 export const fetchProductsById = createAsyncThunk(
     '/Products/fetchById',
     async (id: string) => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`);
         return response.data;
     }
 );
@@ -57,7 +57,7 @@ export const createProducts = createAsyncThunk(
     '/Products/create',
     async ({ formData, selectedCategoryIds }: CreateOrUpdateProductsParams) => {
         const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes`,
             {
                 ...formData,
                 category: selectedCategoryIds,
@@ -72,7 +72,7 @@ export const updateProducts = createAsyncThunk(
     '/Products/update',
     async ({ id, formData, selectedCategoryIds }: { id: string } & CreateOrUpdateProductsParams) => {
         const response = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`,
             {
                 ...formData,
                 category: selectedCategoryIds,
@@ -86,7 +86,7 @@ export const updateProducts = createAsyncThunk(
 export const deleteProducts = createAsyncThunk(
     '/Products/delete',
     async (id: string) => {
-        const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`, {
+        const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`, {
             withCredentials: true,
         });
         return response.data;
