@@ -33,7 +33,7 @@ const Categories: React.FC = () => {
   // Handle form submission for adding or updating a category
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() === '') return alert('Title is required');
+    if (title.trim() === '') return  toast.toast({ title: 'Please enter a title.', variant: 'destructive' });
     if (!uploadedImageUrl) {
       toast.toast({ title: 'Image is required', variant: 'destructive' });
       return;
