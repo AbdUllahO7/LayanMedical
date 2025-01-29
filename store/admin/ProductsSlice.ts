@@ -1,178 +1,191 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface Products {
-    _id: string;
-    title: string;
-    description: string;
-    category: string[]; // Category IDs
-    features: string[];
-    listImages: string[];
+// Define the Product interface
+interface Product {
+  _id: string;
+  title: string;
+  description: string;
+  category: { _id: string; title: string; image: string }[];
+  features: string[];
+  listImages: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
+// Define the initial state interface
 interface ProductsState {
-    isLoading: boolean;
-    ProductsList: Products[];
-    singleProducts: Products | null;
-    error: string | null;
-}
-
-interface FetchAllProductsParams {
-    sort?: string | null;
-    search: string;
-    page?: number;
-    limit?: number;
-}
-
-interface CreateOrUpdateProductsParams {
-    formData: Record<string, any>;
-    selectedCategoryIds: string[]; // Category IDs
+  products: Product[];
+  selectedProduct: Product | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: ProductsState = {
-    isLoading: true,
-    ProductsList: [],
-    singleProducts: null,
-    error: null,
+  products: [],
+  selectedProduct: null,
+  loading: false,
+  error: null,
 };
 
-// Async Thunks for ProductsAndService routes
-export const fetchAllProducts = createAsyncThunk(
-    '/Products/fetchAll',
-    async () => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes`);
-        return response.data;
+// API Base URL
+
+// Async thunks
+export const fetchAllProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
+  "products/fetchAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/`);
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch products.");
     }
+  }
 );
 
-export const fetchProductsById = createAsyncThunk(
-    '/Products/fetchById',
-    async (id: string) => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`);
-        return response.data;
+export const fetchProductById = createAsyncThunk<Product, string, { rejectValue: string }>(
+  "products/fetchById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`);
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch product.");
     }
+  }
 );
 
-export const createProducts = createAsyncThunk(
-    '/Products/create',
-    async ({ formData, selectedCategoryIds }: CreateOrUpdateProductsParams) => {
-        const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes`,
-            {
-                ...formData,
-                category: selectedCategoryIds,
-            },
-            { withCredentials: true }
-        );
-        return response.data;
+export const createProduct = createAsyncThunk<
+  Product,
+  { formData: { title: string; description: string }; selectedCategoryIds: string[] },
+  { rejectValue: string }
+>(
+  'products/create',
+  async ({ formData, selectedCategoryIds }, { rejectWithValue }) => {
+    try {
+      console.log(selectedCategoryIds)
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`,
+        {
+          ...formData,
+          categories: selectedCategoryIds,
+        }
+      );
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to create product.');
     }
+  }
 );
 
-export const updateProducts = createAsyncThunk(
-    '/Products/update',
-    async ({ id, formData, selectedCategoryIds }: { id: string } & CreateOrUpdateProductsParams) => {
-        const response = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`,
-            {
-                ...formData,
-                category: selectedCategoryIds,
-            },
-            { withCredentials: true }
-        );
-        return response.data;
+
+
+export const updateProduct = createAsyncThunk<Product, { id: string; data: Partial<Product> }, { rejectValue: string }>(
+  "products/update",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`, data);
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to update product.");
     }
+  }
 );
 
-export const deleteProducts = createAsyncThunk(
-    '/Products/delete',
-    async (id: string) => {
-        const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ProductsRoutes/${id}`, {
-            withCredentials: true,
-        });
-        return response.data;
+export const deleteProduct = createAsyncThunk<string, string, { rejectValue: string }>(
+  "products/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`); // Fixed URL
+      return id;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to delete product.");
     }
+  }
 );
 
-const ProductsSlice = createSlice({
-  name: 'Products',
+
+// Create the slice
+const productsSlice = createSlice({
+  name: "products",
   initialState,
   reducers: {
-    setDetails: (state) => {
-      state.singleProducts = null;
+    clearSelectedProduct: (state) => {
+      state.selectedProduct = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch All Products
+      // Fetch all products
       .addCase(fetchAllProducts.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllProducts.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.ProductsList = action.payload.data;
+      .addCase(fetchAllProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        state.products = action.payload;
+        state.loading = false;
       })
       .addCase(fetchAllProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch products.";
       })
-      // Fetch Products by ID
-      .addCase(fetchProductsById.pending, (state) => {
-        state.isLoading = true;
+      // Fetch product by ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProductsById.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.singleProducts = action.payload.data;
+      .addCase(fetchProductById.fulfilled, (state, action: PayloadAction<Product>) => {
+        state.selectedProduct = action.payload;
+        state.loading = false;
       })
-      .addCase(fetchProductsById.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch product.";
       })
-      // Create Products
-      .addCase(createProducts.pending, (state) => {
-        state.isLoading = true;
+      // Create product
+      .addCase(createProduct.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(createProducts.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.ProductsList.push(action.payload.data);
+      .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+        state.products.push(action.payload);
+        state.loading = false;
       })
-      .addCase(createProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+      .addCase(createProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to create product.";
       })
-      // Update Products
-      .addCase(updateProducts.pending, (state) => {
-        state.isLoading = true;
+      // Update product
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(updateProducts.fulfilled, (state, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.ProductsList = state.ProductsList.map((Products) =>
-          Products._id === action.payload.data._id ? action.payload.data : Products
-        );
+      .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+        const index = state.products.findIndex((p) => p._id === action.payload._id);
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
+        state.loading = false;
       })
-      .addCase(updateProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update product.";
       })
-      // Delete Products
-      .addCase(deleteProducts.pending, (state) => {
-        state.isLoading = true;
+      // Delete product
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(deleteProducts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.ProductsList = state.ProductsList.filter((Products) => Products._id !== action.meta.arg);
+      .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
+        state.products = state.products.filter((product) => product._id !== action.payload);
+        state.loading = false;
       })
-      .addCase(deleteProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete product.";
       });
   },
 });
 
-export const { setDetails } = ProductsSlice.actions;
-
-export default ProductsSlice.reducer;
+export const { clearSelectedProduct } = productsSlice.actions;
+export default productsSlice.reducer;
