@@ -21,6 +21,8 @@ import { useToast } from '@/hooks/use-toast';
 import ImageUpload from '../../../../hooks/ImageUpload';
 import Image from 'next/image';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import axios from 'axios';
+import { MultiImageUpload } from '../../../../hooks/MlutiImageUpload';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,8 +32,8 @@ const Products = () => {
   const [description, setDescription] = useState('');
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [DialogOpen, setDialogOpen] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const { categories, loading: categoriesLoading, error } = useSelector(
     (state: RootState) => state.categories
@@ -44,30 +46,67 @@ const Products = () => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+// In Products component
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!title || !description || selectedCategoryIds.length === 0) {
-      return toast.toast({ title: 'All fields are required!', variant: 'destructive' });
+  if (!title || !description || selectedCategoryIds.length === 0) {
+    return toast.toast({ title: 'All fields are required!', variant: 'destructive' });
+  }
+
+  if (imageFiles.length === 0) {
+    return toast.toast({ title: 'Please upload at least one image', variant: 'destructive' });
+  }
+
+  setImageLoadingState(true);
+
+  try {
+    const formData = new FormData();
+    imageFiles.forEach((file) => formData.append("images", file)); // Correctly appending all images
+
+    // Upload images
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/upload-images`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" }, // Ensure proper headers
+      }
+    );
+
+    if (!response.data.success) {
+      throw new Error("Image upload failed");
     }
 
-    const formData = { title, description };
+    const uploadedUrls = response.data.images; // Adjust based on API response
 
-    try {
-      await dispatch(createProduct({ formData, selectedCategoryIds })).unwrap();
-      toast.toast({ title: 'Product created successfully!', variant: 'default' });
-      setTitle('');
-      setDescription('');
-      setSelectedCategoryIds([]);
-      setDialogOpen(false);
-      setImageFile(null);
-      setUploadedImageUrl('');
-      dispatch(fetchAllProducts());
-      
-    } catch {
-      toast.toast({ title: 'Failed to create product.', variant: 'destructive' });
-    }
-  };
+    console.log("Uploaded Images:", uploadedUrls);
+
+    // Create product with uploaded image URLs
+    const productData = { title, description, listImages: uploadedUrls };
+
+    await dispatch(createProduct({ formData: productData, selectedCategoryIds })).unwrap();
+
+    toast.toast({ title: 'Product created successfully!', variant: 'default' });
+
+    // Reset form
+    setTitle('');
+    setDescription('');
+    setSelectedCategoryIds([]);
+    setImageFiles([]);
+    setUploadedImageUrls(uploadedUrls);
+    setDialogOpen(false);
+    dispatch(fetchAllProducts());
+  } catch (error) {
+    console.error("Upload Error:", error);
+    toast.toast({ title: 'Failed to create product', variant: 'destructive' });
+  } finally {
+    setImageLoadingState(false);
+  }
+};
+
+
+console.log(products)
+
 
     // Handle delete category
     const handleDelete = async (id: string) => {
@@ -133,15 +172,12 @@ const Products = () => {
                   </Select>
                 </div>
 
-                  {/* Image Upload */}
-                  <ImageUpload
-                    imageFile={imageFile}
-                    setImageFile={setImageFile}
-                    setUploadedImageUrl={setUploadedImageUrl}
+                <MultiImageUpload
+                    imageFiles={imageFiles}
+                    setImageFiles={setImageFiles}
                     setImageLoadingState={setImageLoadingState}
                     imageLoadingState={imageLoadingState}
                     isEditMode={false}
-                    urlToUpload={`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/upload-image`}
                   />
               </div>
               <DialogFooter>
@@ -158,15 +194,22 @@ const Products = () => {
           <Card key={product._id} className='w-[300px] text-center flex flex-col justify-items-center items-center gap-2'>
           <CardHeader>
             <CardTitle>
-              {product.listImage && (
-                <Image
-                  src={`${product.image.replace('http://', 'https://')}`}
-                  alt={product.title}
-                  width={100}
-                  height={100}
-                  className="w-32 h-32 object-cover"
-                />
+            {product.listImages?.length > 0 && (
+              
+                <div className="flex flex-wrap gap-2">
+                  {product.listImages.map((imageUrl, index) => (
+                    <Image
+                      key={index}
+                      src={`${imageUrl.replace('http://', 'https://')}`}
+                      alt={product.title}
+                      width={100}
+                      height={100}
+                      className="w-24 h-24 object-cover"
+                    />
+                  ))}
+                </div>
               )}
+
             </CardTitle>
             <CardDescription>{product.title}</CardDescription>
             <CardDescription>{product.description}</CardDescription>

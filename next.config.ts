@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com',  // Make sure this is correct
+        hostname: 'res.cloudinary.com',
         port: '',
         pathname: '/**',
       },
@@ -54,12 +54,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-
+      // Local development configuration
       {
         protocol: 'http', // Local development (localhost)
         hostname: 'localhost',
-        port: '5000',
-        pathname: '/uploads/**',
+        port: '5000', // Correct port
+        pathname: '/api/uploads/**', // Ensure this matches the actual URL
       },
     ],
   },

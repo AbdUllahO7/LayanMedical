@@ -55,15 +55,15 @@ export const fetchProductById = createAsyncThunk<Product, string, { rejectValue:
   }
 );
 
-export const createProduct = createAsyncThunk<
-  Product,
-  { formData: { title: string; description: string }; selectedCategoryIds: string[] },
+export const createProduct = createAsyncThunk<Product, 
+  { formData: { title: string; description: string; listImages: string[] }; selectedCategoryIds: string[] }, 
   { rejectValue: string }
 >(
   'products/create',
   async ({ formData, selectedCategoryIds }, { rejectWithValue }) => {
+
+    console.log("formData" , formData);
     try {
-      console.log(selectedCategoryIds)
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`,
         {
@@ -77,6 +77,7 @@ export const createProduct = createAsyncThunk<
     }
   }
 );
+
 
 
 
