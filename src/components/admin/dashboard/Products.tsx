@@ -16,13 +16,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store';
 import { fetchCategories } from '../../../../store/admin/CategoriesSlice';
-import { createProduct, deleteProduct, fetchAllProducts } from '../../../../store/admin/ProductsSlice';
+import { createProduct, deleteProduct, fetchAllProducts, updateProduct } from '../../../../store/admin/ProductsSlice';
 import { useToast } from '@/hooks/use-toast';
 import ImageUpload from '../../../../hooks/ImageUpload';
 import Image from 'next/image';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import axios from 'axios';
 import { MultiImageUpload } from '../../../../hooks/MlutiImageUpload';
+import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { BentoGridItem } from '@/components/ui/bento-grid';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +38,9 @@ const Products = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
   const [imageLoadingState, setImageLoadingState] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const router = useRouter();
   const { categories, loading: categoriesLoading, error } = useSelector(
     (state: RootState) => state.categories
   );
@@ -46,66 +52,90 @@ const Products = () => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-// In Products component
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
 
-  if (!title || !description || selectedCategoryIds.length === 0) {
-    return toast.toast({ title: 'All fields are required!', variant: 'destructive' });
-  }
+  const handleEditClick = (product: any) => {
+    setEditingProduct(product);
+    setTitle(product.title);
+    setDescription(product.description);
+    setSelectedCategoryIds(product.categories || []);
+    setUploadedImageUrls(product.listImages || []);
+    setDialogOpen(true);
+    setIsEditMode(true);
+  };
 
-  if (imageFiles.length === 0) {
-    return toast.toast({ title: 'Please upload at least one image', variant: 'destructive' });
-  }
+  
+  // In Products component
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  setImageLoadingState(true);
-
-  try {
-    const formData = new FormData();
-    imageFiles.forEach((file) => formData.append("images", file)); // Correctly appending all images
-
-    // Upload images
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/upload-images`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" }, // Ensure proper headers
-      }
-    );
-
-    if (!response.data.success) {
-      throw new Error("Image upload failed");
+    if (!title || !description || selectedCategoryIds.length === 0) {
+      return toast.toast({ title: 'All fields are required!', variant: 'destructive' });
     }
 
-    const uploadedUrls = response.data.images; // Adjust based on API response
+    setImageLoadingState(true);
 
-    console.log("Uploaded Images:", uploadedUrls);
+    try {
+      let uploadedUrls = isEditMode ? [] : [...uploadedImageUrls]; // Reset old images in edit mode
 
-    // Create product with uploaded image URLs
-    const productData = { title, description, listImages: uploadedUrls };
+      if (imageFiles.length > 0) {
+        const formData = new FormData();
+        imageFiles.forEach((file) => formData.append("images", file));
 
-    await dispatch(createProduct({ formData: productData, selectedCategoryIds })).unwrap();
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/upload-images`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
 
-    toast.toast({ title: 'Product created successfully!', variant: 'default' });
+        if (!response.data.success) {
+          throw new Error("Image upload failed");
+        }
 
-    // Reset form
+        uploadedUrls = [...response.data.images]; // Only use newly uploaded images
+      }
+
+      const productData = { 
+        title, 
+        description, 
+        listImages: uploadedUrls, 
+        selectedCategoryIds 
+      };
+
+      if (isEditMode && editingProduct) {
+        // Update existing product
+        await dispatch(updateProduct({ id: editingProduct._id, data: productData })).unwrap();
+        toast.toast({ title: 'Product updated successfully!', variant: 'default' });
+      } else {
+        // Create new product
+        await dispatch(createProduct({ formData: productData, selectedCategoryIds })).unwrap();
+        toast.toast({ title: 'Product created successfully!', variant: 'default' });
+      }
+
+      // Reset form
+      resetForm();
+      dispatch(fetchAllProducts());
+    } catch (error) {
+      console.error("Error:", error);
+      toast.toast({ title: 'Failed to submit product', variant: 'destructive' });
+    } finally {
+      setImageLoadingState(false);
+    }
+  };
+
+
+  const resetForm = () => {
     setTitle('');
     setDescription('');
     setSelectedCategoryIds([]);
     setImageFiles([]);
-    setUploadedImageUrls(uploadedUrls);
+    setUploadedImageUrls([]);
     setDialogOpen(false);
-    dispatch(fetchAllProducts());
-  } catch (error) {
-    console.error("Upload Error:", error);
-    toast.toast({ title: 'Failed to create product', variant: 'destructive' });
-  } finally {
-    setImageLoadingState(false);
-  }
-};
+    setIsEditMode(false);
+    setEditingProduct(null);
+  };
 
 
-console.log(products)
+
 
 
     // Handle delete category
@@ -188,39 +218,37 @@ console.log(products)
         </Dialog>
       
       </div>
-         {/* List of Categories */}
-      <div className='flex flex-wrap justify-center items-center gap-4 mt-4 '>
-        {products.map((product: any) => (
-          <Card key={product._id} className='w-[300px] text-center flex flex-col justify-items-center items-center gap-2'>
+         {/* List of products */}
+        <div className='flex flex-wrap justify-center items-center gap-4 mt-4 '>
+          {products.map((product: any) => (
+          <Card key={product._id} className='w-[300px] text-center flex flex-col justify-center items-center gap-2'>
           <CardHeader>
             <CardTitle>
-            {product.listImages?.length > 0 && (
-              
-                <div className="flex flex-wrap gap-2">
-                  {product.listImages.map((imageUrl, index) => (
+                {product.listImages && (
                     <Image
-                      key={index}
-                      src={`${imageUrl.replace('http://', 'https://')}`}
+                      src={`${product.listImages[0].replace('http://', 'https://')}`}
                       alt={product.title}
                       width={100}
                       height={100}
-                      className="w-24 h-24 object-cover"
+                      className="w-32 h-32 object-cover"
                     />
-                  ))}
-                </div>
-              )}
+                  )}
 
             </CardTitle>
-            <CardDescription>{product.title}</CardDescription>
-            <CardDescription>{product.description}</CardDescription>
+                  <CardDescription><span className='text-primary text-xl font-bold'>{product.title}</span></CardDescription>
 
           </CardHeader>
           <DialogFooter className="flex justify-center items-center  pb-2 gap-2">
-            <Button variant="outline" onClick={() => handleDelete(product._id)}>
+          <Link className='bg-green-950 px-3 py-2 rounded-lg text-white' href={`/products/productDetails/${product._id}`} key={product._id}>
+              Details
+          </Link>
+            <Button className='bg-blue-950'  onClick={() => handleEditClick(product)}>Edit</Button>
+
+            <Button  className='bg-red-900 text-white  transition-all' onClick={() => handleDelete(product._id)}>
               Delete
             </Button>
-            {/* <Button onClick={() => setIsDialogOpen(true)}>Update</Button> */}
-          </DialogFooter>
+            
+            </DialogFooter>
         </Card>
         
         ))}

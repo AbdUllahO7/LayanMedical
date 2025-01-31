@@ -33,49 +33,52 @@ const Categories: React.FC = () => {
   // Handle form submission for adding or updating a category
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() === '') return  toast.toast({ title: 'Please enter a title.', variant: 'destructive' });
+    if (title.trim() === '') return toast.toast({ title: 'Please enter a title.', variant: 'destructive' });
     if (!uploadedImageUrl) {
       toast.toast({ title: 'Image is required', variant: 'destructive' });
       return;
     }
-
+  
     const categoryData = { title, image: uploadedImageUrl };
-
+  
     if (currentCategory) {
-      // Update category if currentCategory is set
-      await dispatch(updateCategory({ id: currentCategory._id, ...categoryData }));
+      await dispatch(updateCategory({ id: currentCategory._id, ...categoryData }))
+        .unwrap()
+        .then(() => {
+          toast.toast({ title: 'Category updated successfully' });
+        })
+        .catch(() => {
+          toast.toast({ title: 'Error updating category', variant: 'destructive' });
+        });
     } else {
-      // Create new category
-      await dispatch(createCategory(categoryData));
+      await dispatch(createCategory(categoryData))
+        .unwrap()
+        .then(() => {
+          toast.toast({ title: 'Category added successfully' });
+        })
+        .catch(() => {
+          toast.toast({ title: 'Error adding category', variant: 'destructive' });
+        });
     }
-
+  
     // Reset form and close dialog
     setTitle('');
     setImageFile(null);
     setUploadedImageUrl('');
     setIsDialogOpen(false);
     setCurrentCategory(null);
-
-    // Refresh categories
-    dispatch(fetchCategories());
   };
-
+  
   // Handle delete category
   const handleDelete = async (id: string) => {
     try {
-      // Dispatch the delete category action
-      await dispatch(deleteCategory(id));
-  
-      // Fetch the updated list of categories
-      dispatch(fetchCategories());
-  
-      // Optionally, show a success toast
-      toast.toast({ title: 'Category deleted successfully'});
+      await dispatch(deleteCategory(id)).unwrap();
+      toast.toast({ title: 'Category deleted successfully' });
     } catch (error) {
-      // Handle any errors that occur during the delete operation
       toast.toast({ title: 'Error deleting category', variant: 'destructive' });
     }
   };
+  
   
 
   if (loading) return <p>Loading...</p>;
@@ -85,7 +88,15 @@ const Categories: React.FC = () => {
     <div className="w-full">
       <div className="flex justify-between w-full items-center">
         <h2 className="font-bold text-2xl">Categories</h2>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isDialogOpen}  onOpenChange={(open) => {
+              setIsDialogOpen(open);
+              if (!open) {
+                setCurrentCategory(null);
+                setTitle('');
+                setImageFile(null);
+                setUploadedImageUrl('');
+              }
+            }}>
           <DialogTrigger asChild>
             <Button variant="outline">{currentCategory ? 'Update Category' : 'Add New Category'}</Button>
           </DialogTrigger>
@@ -111,14 +122,14 @@ const Categories: React.FC = () => {
                 </div>
                 {/* Image Upload */}
                 <ImageUpload
-                  imageFile={imageFile}
-                  setImageFile={setImageFile}
-                  setUploadedImageUrl={setUploadedImageUrl}
-                  setImageLoadingState={setImageLoadingState}
-                  imageLoadingState={imageLoadingState}
-                  isEditMode={false}
-                  urlToUpload={`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/upload-image`}
-                />
+                    imageFile={imageFile}
+                    setImageFile={setImageFile}
+                    setUploadedImageUrl={setUploadedImageUrl}
+                    setImageLoadingState={setImageLoadingState}
+                    imageLoadingState={imageLoadingState}
+                    isEditMode={!!currentCategory} // If updating, set to true
+                    urlToUpload={`${process.env.NEXT_PUBLIC_API_BASE_URL}Categories/upload-image`}
+                  />
               </div>
               <DialogFooter>
                 <Button type="submit" disabled={imageLoadingState}>{currentCategory ? 'Update' : 'Save'}</Button>
@@ -147,10 +158,18 @@ const Categories: React.FC = () => {
             <CardDescription>{category.title}</CardDescription>
           </CardHeader>
           <DialogFooter className="flex justify-center items-center  pb-2 gap-2">
-            <Button variant="outline" onClick={() => handleDelete(category._id)}>
+          
+            <Button  
+              onClick={() => {
+                      setCurrentCategory(category); // Set the selected category
+                      setTitle(category.title); // Populate title
+                      setUploadedImageUrl(category.image); // Populate image URL
+                      setIsDialogOpen(true); // Open the dialog
+                    }}
+                >Update</Button>
+                  <Button  className='bg-red-900 text-white  transition-all' onClick={() => handleDelete(category._id)}>
               Delete
             </Button>
-            <Button onClick={() => setIsDialogOpen(true)}>Update</Button>
           </DialogFooter>
         </Card>
         

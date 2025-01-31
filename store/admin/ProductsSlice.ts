@@ -85,7 +85,10 @@ export const updateProduct = createAsyncThunk<Product, { id: string; data: Parti
   "products/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`, data);
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/${id}`,
+        data
+      );
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Failed to update product.");

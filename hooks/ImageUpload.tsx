@@ -16,7 +16,7 @@ function ImageUpload({
     imageLoadingState,
     isEditMode,
     isCustomStyling = false,
-    urlToUpload
+    urlToUpload,
 }) {
 
     const inputRef = useRef(null)

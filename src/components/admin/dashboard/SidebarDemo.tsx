@@ -13,6 +13,7 @@ import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import Products from "./Products";
 import Categories from "./Categories";
 import { useRouter } from "next/navigation";
+import { logoutUser } from "../../../../store/authSlice";
 
 
 export function SidebarDemo() {
@@ -43,7 +44,8 @@ export function SidebarDemo() {
           <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
         ),
         onClick: () => {
-          router.push("/login");
+          logoutUser();
+          router.push('/')
         },
       },
     ];
