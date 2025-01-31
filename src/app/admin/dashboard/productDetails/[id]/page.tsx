@@ -1,6 +1,6 @@
 'use client'
 
-import { TracingBeamDemo } from '@/components/admin/dashboard/productDetails/TracingBeamDemo';
+import { TracingBeamDemo } from '@/components/Products/productDetails/TracingBeamDemo';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
