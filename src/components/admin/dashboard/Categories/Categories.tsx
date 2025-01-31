@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../store';
-import { fetchCategories, createCategory, updateCategory, deleteCategory } from '../../../../store/admin/CategoriesSlice';
+import { AppDispatch, RootState } from '../../../../../store';
+import { fetchCategories, createCategory, updateCategory, deleteCategory } from '../../../../../store/admin/CategoriesSlice';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import ImageUpload from '../../../../hooks/ImageUpload';
+import ImageUpload from '../../../../../hooks/ImageUpload';
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 

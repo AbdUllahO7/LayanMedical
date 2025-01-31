@@ -82,13 +82,18 @@ export const deleteCategory = createAsyncThunk<string, string , { rejectValue: s
 const categoriesSlice = createSlice({
     name: 'categories',
     initialState,
-    reducers: {},
+    reducers: {
+        clearCategories: (state) => {
+            state.categories = []; // Clear categories before fetching new ones
+        },
+    },
     extraReducers: (builder) => {
         builder
         // Handle fetchCategories
         .addCase(fetchCategories.pending, (state) => {
             state.loading = true;
             state.error = null;
+            state.categories = []; // Clear categories while loading new data
         })
         .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
             state.loading = false;

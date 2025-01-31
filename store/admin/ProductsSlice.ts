@@ -7,7 +7,7 @@ interface Product {
   title: string;
   description: string;
   category: { _id: string; title: string; image: string }[];
-  features: string[];
+  features: string;
   listImages: string[];
   createdAt?: string;
   updatedAt?: string;
@@ -55,6 +55,22 @@ export const fetchProductById = createAsyncThunk<Product, string, { rejectValue:
   }
 );
 
+// Async thunk to fetch products by category
+export const fetchProductsByCategory = createAsyncThunk<Product[], string, { rejectValue: string }>(
+  'products/fetchByCategory',
+  async (categoryId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes/products/category/${categoryId}`
+      );
+      return response.data.data; // Return an array of products
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch products.");
+    }
+  }
+);
+
+
 export const createProduct = createAsyncThunk<Product, 
   { formData: { title: string; description: string; listImages: string[] }; selectedCategoryIds: string[] }, 
   { rejectValue: string }
@@ -62,7 +78,6 @@ export const createProduct = createAsyncThunk<Product,
   'products/create',
   async ({ formData, selectedCategoryIds }, { rejectWithValue }) => {
 
-    console.log("formData" , formData);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}ProductsRoutes`,
@@ -109,6 +124,9 @@ export const deleteProduct = createAsyncThunk<string, string, { rejectValue: str
 );
 
 
+
+
+
 // Create the slice
 const productsSlice = createSlice({
   name: "products",
@@ -116,6 +134,9 @@ const productsSlice = createSlice({
   reducers: {
     clearSelectedProduct: (state) => {
       state.selectedProduct = null;
+    },
+    clearProducts: (state) => {
+      state.products = []; // Clear the products before fetching new ones
     },
   },
   extraReducers: (builder) => {
@@ -133,10 +154,26 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to fetch products.";
       })
+      // fetch by category 
+      .addCase(fetchProductsByCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.products = []; // Clear products while loading new category products
+      })
+      .addCase(fetchProductsByCategory.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProductsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch product.";
+      })
       // Fetch product by ID
       .addCase(fetchProductById.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.products = []; // Clear products while loading new category products
+
       })
       .addCase(fetchProductById.fulfilled, (state, action: PayloadAction<Product>) => {
         state.selectedProduct = action.payload;
@@ -150,6 +187,8 @@ const productsSlice = createSlice({
       .addCase(createProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.products = []; // Clear products while loading new category products
+
       })
       .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product>) => {
         state.products.push(action.payload);
@@ -163,6 +202,8 @@ const productsSlice = createSlice({
       .addCase(updateProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.products = []; // Clear products while loading new category products
+
       })
       .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product>) => {
         const index = state.products.findIndex((p) => p._id === action.payload._id);
@@ -179,6 +220,8 @@ const productsSlice = createSlice({
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.products = []; // Clear products while loading new category products
+
       })
       .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
         state.products = state.products.filter((product) => product._id !== action.payload);

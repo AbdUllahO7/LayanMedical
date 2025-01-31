@@ -10,8 +10,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import Products from "./Products";
-import Categories from "./Categories";
+import Products from "./Products/Products";
+import Categories from "./Categories/Categories";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "../../../../store/authSlice";
 
