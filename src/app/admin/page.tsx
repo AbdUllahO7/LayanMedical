@@ -12,7 +12,6 @@ const page = () => {
         <Provider store={store}>
             <SignupFormDemo />
             <Toaster/>
-            
         </Provider>
     )
 }

@@ -5,12 +5,15 @@ import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { BentoGrid, BentoGridItem } from "../ui/bento-grid";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { ArrowLeftCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function ProductsByCategory({ categoryId }: { categoryId: string }) {
     const { products, loading: productsLoading } = useSelector(
         (state: RootState) => state.products
     );
-    
+    const router = useRouter()
     const [delayedLoading, setDelayedLoading] = useState(true);
     const dispatch = useDispatch<AppDispatch>();
 
@@ -29,10 +32,15 @@ export function ProductsByCategory({ categoryId }: { categoryId: string }) {
 
     return (
         <div className="flex flex-col min-h-screen">
+                <Button  className='bg-lightColor hover:bg-logoColor w-fit' onClick={()=> router.back()}>
+                <span><ArrowLeftCircle/></span>
+                    Back
+            </Button>
             <div className="mx-auto mb-10 text-center">
                 <h2 className="font-bold text-3xl text-[#137E8C]">Products</h2>
+            
             </div>
-
+     
             {/* Conditional Rendering: Show Skeleton if delayedLoading is true, otherwise show products */}
             {delayedLoading || productsLoading ? (
                 <BentoGrid className="max-w-4xl mx-auto">

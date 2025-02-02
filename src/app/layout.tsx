@@ -1,3 +1,4 @@
+'use client'
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -5,6 +6,8 @@ import { NavbarDemo } from "@/components/Navbar";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from 'nextjs-toploader';
+import { Provider } from "react-redux";
+import store from "../../store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,10 +19,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Layan Medical",
-  description: "Layan Medical ",
-};
 
 export default function RootLayout({
   children,
@@ -28,16 +27,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased `}>
+      <Provider store={store}>
                 <Toaster/>
                 <NextTopLoader color="text-primary" showSpinner={false} />
 
               <NavbarDemo />
                 {children}
               <Footer/>
-
+      </Provider>
       </body>
     </html>
   );

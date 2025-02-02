@@ -10,14 +10,12 @@ import store from "../../store";
 
 export default function Home() {
   return (
-   <Provider store={store}>
-     <div className="w-full">
-        <ImagesSliderDemo/>
-        <Category showButton={true}/>
-        <BentoGridDemo showButton={true}/>
-        <CardHoverEffectDemo/>
-        <ContactInfo/>
-    </div>
-   </Provider>
+      <div className="w-full">
+          <ImagesSliderDemo/>
+          <Category showButton={true}/>
+          <BentoGridDemo showButton={true}/>
+          <CardHoverEffectDemo/>
+          <ContactInfo/>
+      </div>
   );
 }

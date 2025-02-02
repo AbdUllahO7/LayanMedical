@@ -1,24 +1,16 @@
-'use client'
+'use client';
 
 import React, { useEffect } from "react";
-import {
-  IconArrowWaveRightUp,
-  IconBoxAlignRightFilled,
-  IconBoxAlignTopLeft,
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-  IconTableColumn,
-} from "@tabler/icons-react";
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import Link from "next/link";
+import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { fetchAllProducts } from "../../store/admin/ProductsSlice";
+import { BackgroundGradient } from "./ui/background-gradient";
 
-export function BentoGridDemo({showButton} : {showButton : boolean}) {
-
-  const { products , loading: productsLoading } = useSelector(
+export function BentoGridDemo({ showButton }: { showButton: boolean }) {
+  const { products, loading: productsLoading } = useSelector(
     (state: RootState) => state.products
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -32,7 +24,7 @@ export function BentoGridDemo({showButton} : {showButton : boolean}) {
       <div className="mx-auto mb-10 text-center">
         <h2 className="font-bold text-3xl text-[#137E8C]">Products</h2>
       </div>
-      
+
       {/* Display Skeleton when products are loading */}
       {productsLoading ? (
         <BentoGrid className="max-w-4xl mx-auto">
@@ -41,19 +33,37 @@ export function BentoGridDemo({showButton} : {showButton : boolean}) {
           ))}
         </BentoGrid>
       ) : (
-        <BentoGrid className="max-w-4xl mx-auto">
-          {products.map((item, i) => (
-            <Link href={`/products/productDetails/${item._id}`} key={item._id}>
-              <BentoGridItem
-                title={item.title}
-                description={item.description}
-                header={item.listImages[0]}
-                icon="IconBoxAlignTopLeft"
-                className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-              />
-            </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {products.slice(0,8).map((item) => (
+            <div key={item._id}>
+              <BackgroundGradient className="rounded-[22px] p-4 sm:p-6 bg-white dark:bg-zinc-900">
+                            <Link href={`/products/productDetails/${item._id}`} key={item._id}>
+                <Image
+                  src={item.listImages[0]}
+                  alt={item.title}
+                  height="400"
+                  width="400"
+                  className="object-contain rounded-lg"
+                />
+                            </Link>
+
+                <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200 line-clamp-1">
+                  {item.title}
+                </p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-1">
+                  {item.description}
+                </p>
+                <button className="rounded-full pl-4 pr-1 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
+                <Link href="https://layandent.com/">Buy now</Link>
+
+                  <span className="bg-zinc-700 rounded-full text-[0.6rem] px-2 py-0 text-white">
+                    {/* ${item.price || "100"} */}
+                  </span>
+                </button>
+              </BackgroundGradient>
+            </div>
           ))}
-        </BentoGrid>
+        </div>
       )}
 
       <div className="mt-10">

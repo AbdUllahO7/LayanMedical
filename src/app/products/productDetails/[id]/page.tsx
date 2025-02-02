@@ -3,8 +3,6 @@
 import { TracingBeamDemo } from '@/components/Products/TracingBeamDemo';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from '../../../../../store';
 import { Button } from '@/components/ui/button';
 import { ArrowLeftCircle } from 'lucide-react';
 
@@ -15,18 +13,16 @@ const ProductDetails = () => {
   const router = useRouter()
 
   return (
-    <Provider store={store}>
-
     <div className='h-full flex w-full justify-center items-start mt-[100px]'>
-    <div className="w-fit">
-                <Button className='bg-lightColor hover:bg-logoColor' onClick={()=> router.back()}>
-                <span><ArrowLeftCircle/></span>
-                        Back
-                </Button>
+        <div className="w-fit">
+                    <Button className='bg-lightColor hover:bg-logoColor' onClick={()=> router.back()}>
+                    <span><ArrowLeftCircle/></span>
+                            Back
+                    </Button>
             </div>
+            
         <TracingBeamDemo productId={productId} />
     </div>
-    </Provider>
   );
 };
 
