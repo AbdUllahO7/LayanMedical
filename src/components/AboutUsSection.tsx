@@ -1,7 +1,7 @@
 import { Eye, InfoIcon, MessagesSquare } from "lucide-react";
 import { HoverEffect } from "./ui/card-hover-effect";
 
-export function CardHoverEffectDemo() {
+export function AboutUsSection() {
   return (
     <div className="max-w-5xl mx-auto px-8">
       <div className="mx-auto mt-10 text-center">

@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 
 // Destructure the 'productId' prop correctly
-export function TracingBeamDemo({ productId }: { productId: string }) {
+export function ProductDetailsSection({ productId }: { productId: string }) {
 
     const selectedProduct = useSelector((state: RootState) => state.products?.selectedProduct);
 
@@ -22,7 +22,7 @@ export function TracingBeamDemo({ productId }: { productId: string }) {
     return (
         <div className="px-6">
             <div className="max-w-2xl mx-auto antialiased relative w-full">
-                    <div  className="mb-10">
+                    <div className="mb-10">
                         <h2 className="bg-black text-white rounded-full text-sm w-fit px-4 py-1 mb-4">
                             {selectedProduct?.title}
                         </h2>

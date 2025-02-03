@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from "react";
-import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
+import { BentoGrid } from "./ui/bento-grid";
 import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from "../../store";
 import { fetchAllProducts } from "../../store/admin/ProductsSlice";
 import { BackgroundGradient } from "./ui/background-gradient";
 
-export function BentoGridDemo({ showButton }: { showButton: boolean }) {
+export function ProductsSection({ showButton }: { showButton: boolean }) {
   const { products, loading: productsLoading } = useSelector(
     (state: RootState) => state.products
   );
@@ -34,10 +34,10 @@ export function BentoGridDemo({ showButton }: { showButton: boolean }) {
         </BentoGrid>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {products.slice(0,8).map((item) => (
+          {products.map((item) => (
             <div key={item._id}>
               <BackgroundGradient className="rounded-[22px] p-4 sm:p-6 bg-white dark:bg-zinc-900">
-                            <Link href={`/products/productDetails/${item._id}`} key={item._id}>
+              <Link href={`/products/productDetails/${item._id}`} key={item._id}>
                 <Image
                   src={item.listImages[0]}
                   alt={item.title}

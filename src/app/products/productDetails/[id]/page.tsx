@@ -1,10 +1,10 @@
 'use client'
 
-import { TracingBeamDemo } from '@/components/Products/TracingBeamDemo';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeftCircle } from 'lucide-react';
+import { ProductDetailsSection } from '@/components/Products/ProductDetailsSection';
 
 const ProductDetails = () => {
   // Accessing the `id` from the useParams and ensuring it is a string
@@ -21,7 +21,7 @@ const ProductDetails = () => {
                     </Button>
             </div>
             
-        <TracingBeamDemo productId={productId} />
+        <ProductDetailsSection productId={productId} />
     </div>
   );
 };
