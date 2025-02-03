@@ -1,12 +1,9 @@
 'use client'
 import { BentoGridDemo } from '@/components/BentoGridDemo'
 import React from 'react'
-
-import { useRouter } from 'next/navigation'
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision'
 
 const Page = () => {
-        const router = useRouter()
     
     return (
         <div className='h-full flex w-full flex-wrap justify-center items-start mt-[100px]'>

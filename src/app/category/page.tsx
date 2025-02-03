@@ -10,7 +10,7 @@ const CategoryPage = () => {
   const router = useRouter();
   
   return (
-      <div className='mt-[100px] mb-[150px] container'>
+      <div className='mt-[100px] mb-[150px] '>
         
               <BackgroundBeamsWithCollision className='mb-10'>
                         <h2 className="text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-center text-black dark:text-white font-sans tracking-tight">
@@ -28,7 +28,10 @@ const CategoryPage = () => {
                     <div className="mx-auto mb-10 text-center">
         <h2 className="font-bold text-3xl text-[#137E8C]">Categories</h2>
       </div>
+      <div className='container'>
         <Categories/>
+
+      </div>
     </div>
   )
 }
