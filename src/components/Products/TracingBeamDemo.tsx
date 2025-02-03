@@ -29,8 +29,8 @@ export function TracingBeamDemo({ productId }: { productId: string }) {
                         {/* Display the productId */}
                         <p className={twMerge("text-xl mb-4")}>{selectedProduct?.description}</p>
                         <p className={twMerge("text-xl mb-4")}>
-                                {selectedProduct?.categories[0].title}
-                            </p>
+                                {selectedProduct?.categories[0]?.title}
+                        </p>
 
                         <div className="text-sm prose prose-sm dark:prose-invert flex flex-wrap gap-9">
                             {selectedProduct?.listImages?.map((image, idx) => (

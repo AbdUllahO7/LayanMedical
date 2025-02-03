@@ -6,7 +6,7 @@ interface Product {
   _id: string;
   title: string;
   description: string;
-  category: { _id: string; title: string; image: string }[];
+  categories: { _id: string; title: string; image: string }[];
   features: string;
   listImages: string[];
   createdAt?: string;
