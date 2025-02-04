@@ -20,7 +20,7 @@ const ProductsPage = () => {
                     </div>
                 </h2>
             </BackgroundBeamsWithCollision>
-            <ProductsSection showButton={false}/>
+            <ProductsSection showButton={false} showFilter={true}/>
         </div>
     )
 }

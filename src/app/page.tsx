@@ -13,7 +13,7 @@ export default function Home() {
           <ImagesSliderDemo/> 
           <Category showButton={true}/>
           <Services/>
-          <ProductsSection showButton={true}/>
+          <ProductsSection showButton={true} showFilter={false}/>
           <AboutUsSection/>
           <ContactInfo/>
       </div>

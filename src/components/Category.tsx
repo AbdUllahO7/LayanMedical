@@ -32,7 +32,7 @@ export function Category({ showButton }: { showButton: boolean }) {
                 <CarouselItem key={index} className="pl-1 md:basis-1/2 lg:basis-1/6">
                   <div className="p-1">
                     <Link href={`/products/prodcutDetailsCategory/${cat._id}`}>
-                      <Card className="flex justify-center items-center">
+                      <Card className="flex justify-center items-center shadow-md hover:shadow-2xl transition duration-500 ">
                         <CardContent className="flex-col aspect-square items-center justify-center p-6 gap-4">
                           <Image
                             src={cat.image.replace("http://", "https://")}
