@@ -12,10 +12,11 @@ import Image from 'next/image';
 import ImageUpload from '../../../../../hooks/ImageUpload';
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '../../../../../store/api/DataHelper';
+import { useQuery } from '@tanstack/react-query';
 
 const Categories: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categories, loading, error } = useSelector((state: RootState) => state.categories);
 
   // Form state
   const [title, setTitle] = useState('');
@@ -26,9 +27,12 @@ const Categories: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState<any | null>(null); // For updating an existing category
   const toast = useToast();
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+
+
+  const { data: categories, isLoading, isError } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => apiRequest("Categories/getAllCategories"),
+  });
 
   // Handle form submission for adding or updating a category
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,8 +85,8 @@ const Categories: React.FC = () => {
   
   
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {isError}</p>;
 
   return (
     <div className="w-full">

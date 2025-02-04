@@ -9,7 +9,7 @@ import { ImagesSliderDemo } from "@/components/ImagesSliderDemo";
 export default function Home() {
   return (
       <div className="w-full">
-          <ImagesSliderDemo/>
+          <ImagesSliderDemo/> 
           <Category showButton={true}/>
           <ProductsSection showButton={true}/>
           <AboutUsSection/>

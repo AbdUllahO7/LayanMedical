@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from 'nextjs-toploader';
 import { Provider } from "react-redux";
 import store from "../../store";
+import QueryProvider from "../../store/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
                 <NextTopLoader color="text-primary" showSpinner={false} />
 
               <NavbarDemo />
-                {children}
+              <QueryProvider>{children}</QueryProvider>
               <Footer/>
       </Provider>
       </body>

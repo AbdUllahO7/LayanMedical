@@ -8,7 +8,6 @@ const CategoryPage = () => {
   
   return (
       <div className='mt-[100px] mb-[150px] '>
-    
               <BackgroundBeamsWithCollision className='mb-10'>
                         <h2 className="text-2xl relative z-20 md:text-4xl lg:text-7xl font-bold text-center text-black dark:text-white font-sans tracking-tight">
                             What&apos;s cooler than Beams?{" "}

@@ -4,20 +4,19 @@ import React, { useEffect } from "react";
 import { BentoGrid } from "./ui/bento-grid";
 import Link from "next/link";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
-import { fetchAllProducts } from "../../store/admin/ProductsSlice";
 import { BackgroundGradient } from "./ui/background-gradient";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "../../store/api/DataHelper";
 
 export function ProductsSection({ showButton }: { showButton: boolean }) {
-  const { products, loading: productsLoading } = useSelector(
-    (state: RootState) => state.products
-  );
-  const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+  
+  const { data: products, isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => apiRequest("ProductsRoutes/", "GET"),
+  });
+
+
 
   return (
     <div className="flex flex-col items-center">
@@ -26,7 +25,7 @@ export function ProductsSection({ showButton }: { showButton: boolean }) {
       </div>
 
       {/* Display Skeleton when products are loading */}
-      {productsLoading ? (
+      {isLoading ? (
         <BentoGrid className="max-w-4xl mx-auto">
           {[...Array(6)].map((_, index) => (
             <Skeleton key={index} />
