@@ -21,7 +21,7 @@ export function ProductsSection({ showButton }: { showButton: boolean }) {
   return (
     <div className="flex flex-col items-center">
       <div className="mx-auto mb-10 text-center">
-        <h2 className="font-bold text-3xl text-[#137E8C]">Products</h2>
+        <h2 className="font-bold text-5xl text-[#137E8C]">Products</h2>
       </div>
 
       {/* Display Skeleton when products are loading */}

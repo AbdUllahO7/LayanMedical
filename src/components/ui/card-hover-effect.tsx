@@ -13,7 +13,6 @@ export const HoverEffect = ({
     icon : React.ReactElement ,
     title: string;
     description: string;
-    link: string;
   }[];
   className?: string;
 }) => {
@@ -22,15 +21,14 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 py-10 ",
+        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-5 py-10 ",
         className
       )}
     >
       {items.map((item, idx) => (
-        <Link
-          href={item?.link}
-          key={item?.link}
-          className="relative group  block p-2 h-full w-full"
+        <div
+          key={idx}
+          className="relative group  block p-2 h-full min-w-[200px] xs:w-full w-[250px]"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -56,7 +54,7 @@ export const HoverEffect = ({
           <CardTitle className="text-xl">{item.title}</CardTitle>
             <CardDescription className="text-gray-50">{item.description}</CardDescription>
           </Card>
-        </Link>
+        </div>
       ))}
     </div>
   );

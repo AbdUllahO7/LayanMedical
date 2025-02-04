@@ -22,7 +22,7 @@ export function Category({ showButton }: { showButton: boolean }) {
   return (
     <div className="flex-col justify-center items-center w-full mt-10">
       <div className="mx-auto mb-10 text-center">
-        <h2 className="font-bold text-3xl text-[#137E8C]">Categories</h2>
+        <h2 className="font-bold text-5xl text-[#137E8C]">Categories</h2>
       </div>
       <div className="w-full flex justify-center items-center">
         <div className="container w-full">

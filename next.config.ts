@@ -54,6 +54,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.irem.org',  // Add this line to allow images from www.irem.org
+        port: '',
+        pathname: '/**',
+      },
       // Local development configuration
       {
         protocol: 'http', // Local development (localhost)
