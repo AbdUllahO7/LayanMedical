@@ -10,55 +10,55 @@ import { apiRequest } from "../../store/api/DataHelper";
 import { RotateCcw } from "lucide-react";
 import FilterComponent from "./FilterCompoennt";
 
-export function ProductsSection({ showButton, showFilter }) {
-  const [filters, setFilters] = useState({ category: "", search: "" });
-  const [sortBy, setSortBy] = useState("createdAt"); // Default sort by createdAt
-  const [sortOrder, setSortOrder] = useState("desc"); // Default descending order
+export function AnotherProductSection({ showButton, showFilter }) {
+    const [filters, setFilters] = useState({ category: "", search: "" });
+    const [sortBy, setSortBy] = useState("createdAt"); // Default sort by createdAt
+    const [sortOrder, setSortOrder] = useState("asc"); // Default descending order
 
-  const { data: products, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => apiRequest("ProductsRoutes", "GET"),
-  });
-
-  const filteredProducts = useMemo(() => {
-    if (!products) return [];
-
-    // Sort products by selected criteria and order
-    const sortedProducts = [...products].sort((a, b) => {
-      const valueA = sortBy === "createdAt" ? new Date(a.createdAt).getTime() : a[sortBy];
-      const valueB = sortBy === "createdAt" ? new Date(b.createdAt).getTime() : b[sortBy];
-
-      if (sortOrder === "asc") {
-        return valueA > valueB ? 1 : -1;
-      } else {
-        return valueA < valueB ? 1 : -1;
-      }
+    const { data: products, isLoading } = useQuery({
+        queryKey: ["products"],
+        queryFn: () => apiRequest("ProductsRoutes", "GET"),
     });
+
+    const filteredProducts = useMemo(() => {
+        if (!products) return [];
+
+        // Sort products by selected criteria and order
+        const sortedProducts = [...products].sort((a, b) => {
+        const valueA = sortBy === "createdAt" ? new Date(a.createdAt).getTime() : a[sortBy];
+        const valueB = sortBy === "createdAt" ? new Date(b.createdAt).getTime() : b[sortBy];
+
+        if (sortOrder === "asc") {
+            return valueA > valueB ? 1 : -1;
+        } else {
+            return valueA < valueB ? 1 : -1;
+        }
+        });
 
     // Get the last 6 products after sorting
     const lastSixProducts = sortedProducts.slice(0, 6);
 
     // Apply filters on the last 6 products
-    return lastSixProducts.filter((item) => {
-      const categoryMatch = filters.category ? item.categories?.[0]?.title === filters.category : true;
-      const searchMatch = filters.search ? item.title.toLowerCase().includes(filters.search.toLowerCase()) : true;
-      return categoryMatch && searchMatch;
-    });
-  }, [filters, products, sortBy, sortOrder]);
+        return lastSixProducts.filter((item) => {
+        const categoryMatch = filters.category ? item.categories?.[0]?.title === filters.category : true;
+        const searchMatch = filters.search ? item.title.toLowerCase().includes(filters.search.toLowerCase()) : true;
+        return categoryMatch && searchMatch;
+        });
+    }, [filters, products, sortBy, sortOrder]);
 
-  const applyFilter = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
+    const applyFilter = (key, value) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-  const resetFilters = () => {
-    setFilters({ category: "", search: "" });
-  };
+    const resetFilters = () => {
+        setFilters({ category: "", search: "" });
+    };
 
-  const handleSortChange = (e) => {
-    const [criteria, order] = e.target.value.split(":");
-    setSortBy(criteria);
-    setSortOrder(order);
-  };
+    const handleSortChange = (e) => {
+        const [criteria, order] = e.target.value.split(":");
+        setSortBy(criteria);
+        setSortOrder(order);
+    };
 
   return (
     <div className="flex w-full flex-wrap">

@@ -10,7 +10,6 @@ export const apiRequest = async (endpoint: string, method: string = "GET", body?
         if (!res.ok) console.log('')
     
         const data = await res.json();
-        console.log(`${method} response:`, data);
         return data.data; 
   };
   
