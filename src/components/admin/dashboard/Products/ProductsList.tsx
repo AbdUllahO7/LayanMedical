@@ -22,7 +22,7 @@ const ProductsList = ({ products, onEdit, onDelete }) => {
                 )}
                 </CardTitle>
                 <CardDescription>
-                <span className="text-primary text-xl font-bold">{product.title}</span>
+                <span className="text-primary text-xl font-bold line-clamp-1">{product.title}</span>
                 </CardDescription>
             </CardHeader>
             <div className="flex justify-center items-center pb-2 gap-2">
