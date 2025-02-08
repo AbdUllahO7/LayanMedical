@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 const ProductsList = ({ products, onEdit, onDelete }) => {
     return (
         <div className="flex flex-wrap justify-center items-center gap-4 mt-4">
-        {products.map((product) => (
+        {products?.map((product) => (
             <Card key={product._id} className="w-[300px] text-center flex flex-col justify-center items-center gap-2">
             <CardHeader>
                 <CardTitle>

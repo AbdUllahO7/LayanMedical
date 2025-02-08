@@ -17,6 +17,8 @@ import { fetchCategories } from '../../../../../store/admin/CategoriesSlice';
 import { createProduct, deleteProduct, fetchAllProducts, updateProduct } from '../../../../../store/admin/ProductsSlice';
 import ProductsList from './ProductsList';
 import ProductForm from './ProductForm';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '../../../../../store/api/DataHelper';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,13 +34,17 @@ const Products = () => {
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [features, setFeatures] = useState('');
+  const queryClient = useQueryClient();
 
   const { categories, loading: categoriesLoading, error } = useSelector(
     (state: RootState) => state.categories
   );
-  const { products , loading: productsLoading } = useSelector(
-    (state: RootState) => state.products
-  );
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => apiRequest("ProductsRoutes", "GET"),
+  });
+
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchAllProducts());
@@ -51,7 +57,7 @@ const Products = () => {
     setTitle(product.title);  // Set the title
     setDescription(product.description);  // Set the description
     setSelectedCategoryIds(product.categories || []);  // Set selected categories
-    setUploadedImageUrls(product.listImages || []);  // Set the uploaded images
+    setUploadedImageUrls([]);  // Set the uploaded images
     setFeatures(product.features || '');  // Set the features text
     setDialogOpen(true);
     setIsEditMode(true); // Set edit mode to true when editing an existing product
@@ -63,21 +69,24 @@ const Products = () => {
     setDialogOpen(true);
     setTitle('')
     setDescription('')
+    setFeatures('')
+    resetForm();
+
   };
   
   // In Products component
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!title || !description ) {
+    if (!title || !description) {
       return toast.toast({ title: 'All fields are required!', variant: 'destructive' });
     }
 
     setImageLoadingState(true);
 
     try {
-      let uploadedUrls = isEditMode ? [] : [...uploadedImageUrls]; // Reset old images in edit mode
+      let uploadedUrls = [...uploadedImageUrls];
 
+      // Upload new images if any
       if (imageFiles.length > 0) {
         const formData = new FormData();
         imageFiles.forEach((file) => formData.append("images", file));
@@ -91,8 +100,7 @@ const Products = () => {
         if (!response.data.success) {
           throw new Error("Image upload failed");
         }
-
-        uploadedUrls = [...response.data.images]; // Only use newly uploaded images
+        uploadedUrls = [...response.data.images];
       }
 
       const productData = { 
@@ -103,23 +111,26 @@ const Products = () => {
         selectedCategoryIds 
       };
 
-
       if (isEditMode && editingProduct) {
-        // Update existing product
-        await dispatch(updateProduct({ id: editingProduct._id, data: productData })).unwrap();
-        toast.toast({ title: 'Product updated successfully!', variant: 'default' });
+        await dispatch(updateProduct({ 
+          id: editingProduct._id, 
+          data: productData 
+        })).unwrap();
+        toast.toast({ title: 'Product updated successfully!' });
       } else {
-        // Create new product
-        await dispatch(createProduct({ formData: productData, selectedCategoryIds })).unwrap();
-        toast.toast({ title: 'Product created successfully!', variant: 'default' });
+        await dispatch(createProduct({ 
+          formData: productData, 
+          selectedCategoryIds 
+        })).unwrap();
+        toast.toast({ title: 'Product created successfully!' });
       }
 
-      // Reset form
+      // Invalidate queries and reset form
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       resetForm();
-      dispatch(fetchAllProducts());
     } catch (error) {
       console.error("Error:", error);
-      toast.toast({ title: 'Failed to submit product', variant: 'destructive' });
+      toast.toast({ title: 'Operation failed', variant: 'destructive' });
     } finally {
       setImageLoadingState(false);
     }
@@ -141,17 +152,11 @@ const Products = () => {
     // Handle delete category
     const handleDelete = async (id: string) => {
       try {
-        // Dispatch the delete category action
-        await dispatch(deleteProduct(id));
-    
-        // Fetch the updated list of categories
-        dispatch(fetchAllProducts());
-    
-        // Optionally, show a success toast
-        toast.toast({ title: 'Product deleted successfully'});
+        await dispatch(deleteProduct(id)).unwrap();
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        toast.toast({ title: 'Product deleted successfully' });
       } catch (error) {
-        // Handle any errors that occur during the delete operation
-        toast.toast({ title: 'Error deleting Product', variant: 'destructive' });
+        toast.toast({ title: 'Deletion failed', variant: 'destructive' });
       }
     };
 

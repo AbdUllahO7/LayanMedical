@@ -13,10 +13,9 @@ import ImageUpload from '../../../../../hooks/ImageUpload';
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '../../../../../store/api/DataHelper';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Categories: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
 
   // Form state
   const [title, setTitle] = useState('');
@@ -27,6 +26,8 @@ const Categories: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState<any | null>(null); // For updating an existing category
   const toast = useToast();
 
+  const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient(); // Added queryClient
 
 
   const { data: categories, isLoading, isError } = useQuery({
@@ -42,42 +43,40 @@ const Categories: React.FC = () => {
       toast.toast({ title: 'Image is required', variant: 'destructive' });
       return;
     }
-  
+
     const categoryData = { title, image: uploadedImageUrl };
-  
-    if (currentCategory) {
-      await dispatch(updateCategory({ id: currentCategory._id, ...categoryData }))
-        .unwrap()
-        .then(() => {
-          toast.toast({ title: 'Category updated successfully' });
-        })
-        .catch(() => {
-          toast.toast({ title: 'Error updating category', variant: 'destructive' });
-        });
-    } else {
-      await dispatch(createCategory(categoryData))
-        .unwrap()
-        .then(() => {
-          toast.toast({ title: 'Category added successfully' });
-        })
-        .catch(() => {
-          toast.toast({ title: 'Error adding category', variant: 'destructive' });
-        });
+
+    try {
+      if (currentCategory) {
+        await dispatch(updateCategory({ id: currentCategory._id, ...categoryData })).unwrap();
+        toast.toast({ title: 'Category updated successfully' });
+      } else {
+        await dispatch(createCategory(categoryData)).unwrap();
+        toast.toast({ title: 'Category added successfully' });
+      }
+      
+      // Invalidate the categories query to trigger refetch
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    } catch (error) {
+      toast.toast({ title: `Error ${currentCategory ? 'updating' : 'adding'} category`, variant: 'destructive' });
     }
-  
-    // Reset form and close dialog
+
+    // Reset form
     setTitle('');
     setImageFile(null);
     setUploadedImageUrl('');
     setIsDialogOpen(false);
     setCurrentCategory(null);
   };
+
   
   // Handle delete category
   const handleDelete = async (id: string) => {
     try {
       await dispatch(deleteCategory(id)).unwrap();
       toast.toast({ title: 'Category deleted successfully' });
+      // Invalidate the categories query to trigger refetch
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     } catch (error) {
       toast.toast({ title: 'Error deleting category', variant: 'destructive' });
     }

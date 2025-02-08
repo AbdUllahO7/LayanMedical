@@ -127,7 +127,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             setImageFiles={setImageFiles}
             setImageLoadingState={setImageLoadingState}
             imageLoadingState={imageLoadingState}
-            isEditMode={!isEditMode}
+            isEditMode={!!isEditMode}
           />
         </div>
         <DialogFooter>

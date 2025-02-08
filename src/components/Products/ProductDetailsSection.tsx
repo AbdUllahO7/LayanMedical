@@ -13,6 +13,8 @@ export function ProductDetailsSection({ productId }: { productId: string }) {
         enabled: !!productId, // Prevents running query if productId is undefined
     });
 
+    console.log(selectedProduct)
+
     return (
         <div className="px-6">
             <div className="max-w-2xl mx-auto antialiased relative w-full">
