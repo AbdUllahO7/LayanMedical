@@ -80,7 +80,7 @@ function ImageUpload({
             <label className="text-lg  font-semibold mb-2 block">Upload Image </label>
 
             <div onDragOver={handleDragOver} onDrop={handleDrop} className={`${isEditMode ? 'opacity-5' : ''}border-2 border-dashed rounded-lg p-4 `}>
-                <input type="file" disabled={isEditMode} id = "image-upload" className="hidden"  ref = {inputRef} onChange = {handleImageFileChange}/>
+                <input type="file"  id = "image-upload" className="hidden"  ref = {inputRef} onChange = {handleImageFileChange}/>
                 {
                     !imageFile ?( 
                     <label htmlFor="image-upload" className={`${isEditMode ? "cursor-not-allowed" : ""} flex flex-col items-center justify-center h-32 cursor-pointer`}>

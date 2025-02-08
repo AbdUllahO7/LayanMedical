@@ -45,11 +45,10 @@ export function MultiImageUpload({
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className={`${isEditMode ? "opacity-50 cursor-not-allowed" : ""} border-2 border-dashed rounded-lg p-4`}
+        className={` border-2 border-dashed rounded-lg p-4`}
       >
         <input
           type="file"
-          disabled={isEditMode}
           id="image-upload"
           className="hidden"
           ref={inputRef}
@@ -59,7 +58,7 @@ export function MultiImageUpload({
         {!imageFiles.length ? (
           <label
             htmlFor="image-upload"
-            className={`${isEditMode ? "cursor-not-allowed" : "cursor-pointer"} flex flex-col items-center justify-center h-32`}
+            className={` flex flex-col items-center justify-center h-32`}
           >
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & drop or click to upload images</span>

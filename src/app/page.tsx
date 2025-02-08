@@ -13,9 +13,9 @@ export default function Home() {
       <div className="w-full bg-[#F5F5F5]">
           <ImagesSliderDemo/> 
           <Category showButton={true}/>
-          <Services/>
           <ProductsSection showButton={true} showFilter={false}/>
           <AnotherProductSection showButton={true} showFilter={false}/>
+          <Services/>
           <AboutUsSection/>
           <ContactInfo/>
       </div>

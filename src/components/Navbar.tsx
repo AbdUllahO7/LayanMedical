@@ -43,9 +43,7 @@ function Navbar({ className }: { className?: string }) {
         <Link href="/category" className="text-white">
           Category
         </Link>
-        <Link href="/admin" className="text-white">
-          Admin
-        </Link>
+     
 
         </div>
       

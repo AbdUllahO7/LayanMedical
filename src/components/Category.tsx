@@ -30,18 +30,18 @@ export function Category({ showButton }: { showButton: boolean }) {
             <CarouselContent className="-ml-1 w-full">
               {categories.map((cat: any, index: number) => (
                 <CarouselItem key={index} className="pl-1 md:basis-1/2 lg:basis-1/6">
-                  <div className="p-1">
+                  <div className="p-1 flex-col justify-center items-center">
                     <Link href={`/products/prodcutDetailsCategory/${cat._id}`}>
-                      <Card className="flex justify-center items-center shadow-md hover:shadow-2xl transition duration-500 ">
-                        <CardContent className="flex-col aspect-square items-center justify-center p-6 gap-4">
+                      <Card className="flex justify-center items-center shadow-md hover:shadow-2xl transition duration-500 min-h-[260px]">
+                        <CardContent className="flex-col aspect-square items-center  justify-center p-6 gap-4">
                           <Image
                             src={cat.image.replace("http://", "https://")}
                             alt={cat.title}
                             width={100}
                             height={100}
-                            className="w-32 h-32 object-cover"
+                            className="w-32 h-32 object-cover m-auto"
                           />
-                          <p className="text-center pt-4 font-bold">{cat.title}</p>
+                          <p className="text-center pt-4 font-bold text-sm">{cat.title}</p>
                         </CardContent>
                       </Card>
                     </Link>
