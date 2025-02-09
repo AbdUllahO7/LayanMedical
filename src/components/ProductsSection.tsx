@@ -133,7 +133,7 @@ export function ProductsSection({ showButton, showFilter }) {
       </div>
 
       <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-black mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
-        <Link href="https://layandent.com/">Buy now</Link>
+        <Link target="_blank" href="https://layandent.com/">Buy now</Link>
       </Button>
     </BackgroundGradient>
   </div>

@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BackgroundGradient } from "../ui/background-gradient";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 export function ProductsByCategory({ categoryId }: { categoryId: string }) {
-    const router = useRouter();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [delayedLoading, setDelayedLoading] = useState(true);
@@ -60,29 +60,31 @@ export function ProductsByCategory({ categoryId }: { categoryId: string }) {
                 <BentoGrid className="max-w-4xl mx-auto">
                     {products?.length > 0 ? (
                         products?.map((item) => (
-                            <div key={item._id}>
-                                <BackgroundGradient className="rounded-[22px] p-4 sm:p-6 bg-white dark:bg-zinc-900">
-                                    <Link href={`/products/productDetails/${item._id}`} key={item._id}>
-                                        <Image
-                                            src={item.listImages[0]}
-                                            alt={item.title}
-                                            height="400"
-                                            width="400"
-                                            className="object-contain rounded-lg"
-                                        />
-                                    </Link>
-                                    <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200 line-clamp-1">
-                                        {item.title}
+                            <div key={item._id} className="h-full">
+                                <BackgroundGradient className="rounded-[22px] h-full p-4 sm:p-6 bg-white dark:bg-zinc-900 flex flex-col">
+                                <Link href={`/products/productDetails/${item._id}`} className="block relative h-48">
+                                    <Image
+                                    src={item.listImages[0]}
+                                    alt={item.title}
+                                    fill
+                                    style={{ objectFit: "contain" }}
+                                    className="rounded-lg"
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    />
+                                </Link>
+                            
+                                <div className="flex-1 mt-4">
+                                    <p className="text-base sm:text-xl text-black mb-2 dark:text-neutral-200 line-clamp-1">
+                                    {item.title}
                                     </p>
                                     <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-1">
-                                        {item.description}
+                                    {item.description}
                                     </p>
-                                    <button className="rounded-full pl-4 pr-1 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
-                                        <Link href="https://layandent.com/">Buy now</Link>
-                                        <span className="bg-zinc-700 rounded-full text-[0.6rem] px-2 py-0 text-white">
-                                            {/* ${item.price || "100"} */}
-                                        </span>
-                                    </button>
+                                </div>
+                            
+                                <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-black mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
+                                    <Link href="https://layandent.com/">Buy now</Link>
+                                </Button>
                                 </BackgroundGradient>
                             </div>
                         ))

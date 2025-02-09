@@ -43,7 +43,8 @@ function Navbar({ className }: { className?: string }) {
         <Link href="/category" className="text-white">
           Category
         </Link>
-     
+        <Link target="_blank" className="text-white" href="https://layandent.com/">Salla</Link>
+
 
         </div>
       
