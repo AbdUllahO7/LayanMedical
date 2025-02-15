@@ -170,11 +170,12 @@ const Products = () => {
                 Add New Product
               </Button>
             </DialogTrigger>
-          <DialogContent className="sm:max-w-[825px] h-[95vh]">
+            <DialogContent className="sm:max-w-[825px] h-[95vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add New Product</DialogTitle>
               <DialogDescription>Fill out the form below to add a new product.</DialogDescription>
             </DialogHeader>
+            <div className="flex-1 overflow-y-auto">
             <ProductForm
                   title={title}
                   description={description}
@@ -196,6 +197,7 @@ const Products = () => {
                   imageLoadingState={imageLoadingState}
                   setImageLoadingState={setImageLoadingState}
           />
+                </div>
           </DialogContent>
         </Dialog>
       
