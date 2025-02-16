@@ -93,7 +93,7 @@ export function AnotherProductSection({ showButton, showFilter }) {
       {/* Products Grid */}
       <div className="flex-1 flex flex-col items-center p-6">
         <div className="mx-auto mb-10 text-center">
-          <h2 className="font-bold text-5xl text-[#137E8C]">Latest Products</h2>
+          <h2 className="font-bold text-5xl text-[#137E8C]">Most Popular</h2>
           
         
         </div>
