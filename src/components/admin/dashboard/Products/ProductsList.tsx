@@ -10,7 +10,7 @@ const ProductsList = ({ products, onEdit, onDelete }) => {
         {products?.map((product) => (
             <Card key={product._id} className="w-[300px] text-center flex flex-col justify-center items-center gap-2">
             <CardHeader>
-                <CardTitle>
+                <CardTitle className='flex justify-center items-center'>
                 {product.listImages && (
                     <Image
                     src={product.listImages[0] ? product.listImages[0].replace('http://', 'https://') : 'https://img.freepik.com/free-photo/cement-texture_1194-6521.jpg?semt=ais_hybrid'}
