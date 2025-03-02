@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../../store/api/DataHelper";
 
 export function Category({ showButton }: { showButton: boolean }) {
+
+  
   const { data, isLoading, isError } = useQuery({
     queryKey: ["categories"],
     queryFn: () => apiRequest("Categories/getAllCategories", "GET"),

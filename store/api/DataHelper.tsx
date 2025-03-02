@@ -11,5 +11,4 @@ export const apiRequest = async (endpoint: string, method: string = "GET", body?
     
         const data = await res.json();
         return data.data; 
-  };
-  
+};

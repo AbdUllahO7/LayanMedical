@@ -18,13 +18,13 @@ const Categories = () => {
 
 
     return (
-    <div className='grid grid-cols-1 md:grid-cols-6 gap-8'>
+    <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8'>
             {categories?.map((cat, index) => (
             <div className="p-1 bg-white" key={index} >
             <Link href={`/products/prodcutDetailsCategory/${cat._id}`}>
 
             <Card className='bg-white shadow-xl hover:bg-blue-100 transition-colors duration-300'>
-                <CardContent className="flex-col  aspect-square items-center justify-center p-6 gap-4">
+                <CardContent className="flex-col flex aspect-square items-center justify-center p-6 gap-4">
                         <Image
                             src={`${cat.image.replace('http://', 'https://')}`}
                             alt={cat.title}
