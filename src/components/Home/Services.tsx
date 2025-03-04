@@ -56,32 +56,32 @@ const items = [
   {
     title: "Maintenance contracts for medical centers",
     description: "",
-    header: <Image src="/assets/images/handshake-close-up-executives.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
+    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/handshake-close-up-executives_inbesr.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Maintenance of all medical devices",
     description: "",
-    header: <Image src="/assets/images/dental.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
+    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental_htu9ab.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Maintenance of all dental handpieces",
     description: "",
-    header: <Image src="/assets/images/dental-2.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
+    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental-2_ckejyz.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Dental chair maintenance",
     description: "Join the quest for understanding and enlightenment.",
-    header: <Image src="/assets/images/freepik__upload__44998.png" className="w-full h-full rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
+    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115007/freepik__upload__44998_ts1p2d.png" className="w-full h-full rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "X-ray room balancing and insulation",
     description:
       "",
-      header: <Image src="/assets/images/Xray-room.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
+      header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/Xray-room_d74qxu.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
       icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
   },
   
