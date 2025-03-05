@@ -9,6 +9,13 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+// Define proper types
+interface ServiceItem {
+  title: string;
+  description?: string;
+  header: React.ReactElement<any>; // Use ReactElement<any> to allow any props
+}
+
 export function Services() {
   const [api, setApi] = React.useState<any>()
   const [current, setCurrent] = React.useState(0)
@@ -69,10 +76,11 @@ export function Services() {
                 <div className="p-1 h-full">
                   <Card className="overflow-hidden border border-gray-100 h-full transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px] bg-white rounded-xl">
                     <div className="relative h-48 w-full overflow-hidden">
-                      {typeof item.header === "object" && React.isValidElement(item.header) ? (
+                      {React.isValidElement(item.header) ? (
                         <div className="w-full h-full">
-                          {React.cloneElement(item.header, {
-                            className: "w-full h-full object-cover transition-transform duration-500 hover:scale-105",
+                          {/* Use type assertion to tell TypeScript this is safe */}
+                          {React.cloneElement(item.header as React.ReactElement<any>, {
+                            className: "w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                           })}
                         </div>
                       ) : (
@@ -139,7 +147,8 @@ export function Services() {
   )
 }
 
-const items = [
+// Type-safe items array
+const items: ServiceItem[] = [
   {
     title: "Maintenance contracts for medical centers",
     description: "Comprehensive service agreements to keep your medical facility running smoothly",
@@ -211,4 +220,3 @@ const items = [
     ),
   },
 ]
-
