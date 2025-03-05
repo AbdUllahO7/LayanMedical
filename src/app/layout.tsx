@@ -1,8 +1,7 @@
 'use client'
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { NavbarDemo } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from 'nextjs-toploader';
@@ -33,7 +32,7 @@ export default function RootLayout({
                 <Toaster/>
                 <NextTopLoader color="text-primary" showSpinner={false} />
 
-              <NavbarDemo />
+                <Navbar />
               <QueryProvider>{children}</QueryProvider>
               <Footer/>
       </Provider>

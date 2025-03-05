@@ -1,12 +1,12 @@
 import { Eye, InfoIcon, MessagesSquare } from "lucide-react";
-import { HoverEffect } from "./ui/card-hover-effect";
 import { IconArrowWaveRightUp, IconClipboardCopy, IconFileBroken, IconSignature, IconTableColumn } from "@tabler/icons-react";
+import { HoverEffect } from "../ui/card-hover-effect";
 
 export function AboutUsSection() {
   return (
     <div className="max-w-8xl mx-auto px-8 container">
       <div className="mx-auto mt-10 text-center">
-            <h2 className="font-bold text-5xl text-[#137E8C]">About us</h2>
+            <h2 className="font-bold text-5xl text-main">About us</h2>
       </div>
       <HoverEffect items={projects} />
       

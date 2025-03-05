@@ -43,8 +43,8 @@ const config: Config = {
         foreground: 'hsl(var(--foreground))',
         primary: { DEFAULT: '#2C3C39', dark: '#2C3C39', light: '#198341', foreground: '#ABDE3B' },
         secondary: { DEFAULT: 'hsl(var(--secondary))', purple: '#AF52DE', indigo: '#5856D6', pink: '#FF2D55', text: '#7D8180' },
-        logoColor : "rgb(29, 184, 204)",
-        lightColor :" #137E8C",
+        logoColor : "rgb(23 23 23 / var(--tw-bg-opacity, 1))",
+        main :"#3F2E56",
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
           foreground: 'hsl(var(--sidebar-foreground))',

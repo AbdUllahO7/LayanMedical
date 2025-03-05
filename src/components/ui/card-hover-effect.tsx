@@ -49,7 +49,7 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card className="bg-lightColor">
+          <Card className="bg-main">
           <CardTitle className="text-xl">{item.icon}</CardTitle>
           <CardTitle className="text-xl">{item.title}</CardTitle>
             <CardDescription className="text-gray-50">{item.description}</CardDescription>

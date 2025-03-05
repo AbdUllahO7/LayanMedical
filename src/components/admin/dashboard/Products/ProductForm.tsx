@@ -18,7 +18,7 @@ interface ProductFormProps {
   editingProduct: any;
   categories: any[];
   categoriesLoading: boolean;
-  error: string;
+  error: boolean;
   handleSubmit: (e: React.FormEvent) => void;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;

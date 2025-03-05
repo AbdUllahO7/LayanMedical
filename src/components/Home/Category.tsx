@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
-import { Card, CardContent } from "./ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import { Card, CardContent } from "../ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../../store/api/DataHelper";
+import { apiRequest } from "../../../store/api/DataHelper";
+import { SkeletonCard } from "../skeleton-card";
 
 export function Category({ showButton }: { showButton: boolean }) {
 
@@ -12,20 +13,40 @@ export function Category({ showButton }: { showButton: boolean }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["categories"],
     queryFn: () => apiRequest("Categories/getAllCategories", "GET"),
+    staleTime: 0,
+
   });
 
 
   const categories = Array.isArray(data) ? data : []; 
 
-  if (isLoading) return <p className="text-center text-gray-500">Loading...</p>;
-
+  if(isLoading) {
+            return<>
+                {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonCard key={index} />
+                ))}
+            </>
+      }
   if (isError) return <p className="text-center text-red-500">Failed to load categories</p>;
 
   return (
     <div className="flex-col justify-center items-center w-full mt-10">
       <div className="mx-auto mb-10 text-center">
-        <h2 className="font-bold text-5xl text-[#137E8C]">Categories</h2>
-      </div>
+      <div className="mb-10 flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold tracking-tight pb-2 md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            Discover Amazing Categories
+          </h2>
+          <p className="mt-4 max-w-[700px] text-muted-foreground">
+            Explore our handpicked selection of extraordinary destinations 
+          </p>
+          {showButton && (
+            <div className="mx-auto mt-10 mb-10 text-center">
+              <Link href="/category" className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-main">
+                Show All
+              </Link>
+            </div>
+          )}
+        </div>      </div>
       <div className="w-full flex justify-center items-center">
         <div className="container w-full">
           <Carousel className="w-full">
@@ -56,13 +77,6 @@ export function Category({ showButton }: { showButton: boolean }) {
           </Carousel>
         </div>
       </div>
-      {showButton && (
-        <div className="mx-auto mt-10 mb-10 text-center">
-          <Link href="/category" className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-[#137E8C]">
-            Show All
-          </Link>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useMemo } from "react";
-import { BentoGrid } from "./ui/bento-grid";
+import { BentoGrid } from "../ui/bento-grid";
 import Link from "next/link";
 import Image from "next/image";
-import { BackgroundGradient } from "./ui/background-gradient";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "../../store/api/DataHelper";
+import { apiRequest } from "../../../store/api/DataHelper";
 import { RotateCcw } from "lucide-react";
-import FilterComponent from "./FilterCompoennt";
-import { Button } from "./ui/button";
+import FilterComponent from "../FilterCompoennt";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 
 export function ProductsSection({ showButton, showFilter }) {
   const [filters, setFilters] = useState({ category: "", search: "" });
@@ -97,7 +97,7 @@ export function ProductsSection({ showButton, showFilter }) {
       {/* Products Grid */}
       <div className="flex-1 flex flex-col items-center p-6">
         <div className="mx-auto mb-10 text-center">
-          <h2 className="font-bold text-5xl text-[#137E8C]">Latest Products</h2>
+          <h2 className="font-bold text-5xl text-main">Latest Products</h2>
           
         </div>
 
@@ -110,34 +110,34 @@ export function ProductsSection({ showButton, showFilter }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 w-full min-w-[300px] max-w-7xl">
           {filteredProducts.map((item) => (
-  <div key={item._id} className="h-full">
-    <BackgroundGradient className="rounded-[22px] h-full p-4 sm:p-6 bg-white dark:bg-zinc-900 flex flex-col">
-      <Link href={`/products/productDetails/${item._id}`} className="block relative h-48">
-        <Image
-          src={item.listImages[0]}
-          alt={item.title}
-          fill
-          style={{ objectFit: "contain" }}
-          className="rounded-lg"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
-      </Link>
+        <div key={item._id} className="h-full">
+          <Card className="rounded-[22px] h-full hover:-translate-y-2 duration-500 hover:bg-gray-100 group p-4 sm:p-6 bg-white dark:bg-zinc-900 flex flex-col">
+            <Link href={`/products/productDetails/${item._id}`} className="block relative h-48">
+              <Image
+                src={item.listImages[0]}
+                alt={item.title}
+                fill
+                style={{ objectFit: "contain" }}
+                className="rounded-lg "
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </Link>
 
-      <div className="flex-1 mt-4">
-        <p className="text-base sm:text-xl text-black mb-2 dark:text-neutral-200 line-clamp-1">
-          {item.title}
-        </p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-1">
-          {item.description}
-        </p>
-      </div>
+            <div className="flex-1 mt-4">
+              <p className="text-base sm:text-xl text-black mb-2 dark:text-neutral-200 line-clamp-1">
+                {item.title}
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-1">
+                {item.description}
+              </p>
+            </div>
 
-      <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-black mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
-        <Link target="_blank" href="https://layandent.com/">Buy now</Link>
-      </Button>
-    </BackgroundGradient>
-  </div>
-))}
+            <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-main mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
+              <Link target="_blank" href="https://layandent.com/">Buy now</Link>
+            </Button>
+          </Card>
+        </div>
+      ))}
           </div>
         )}
 
@@ -145,7 +145,7 @@ export function ProductsSection({ showButton, showFilter }) {
           <div className="mt-10">
             <Link
               href="/products"
-              className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-[#137E8C]"
+              className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-main"
             >
               Show All
             </Link>

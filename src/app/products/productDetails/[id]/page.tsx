@@ -15,7 +15,7 @@ const ProductDetails = () => {
   return (
     <div className='h-full flex w-full justify-center items-start mt-[100px]'>
         <div className="w-fit">
-                    <Button className='bg-lightColor hover:bg-logoColor' onClick={()=> router.back()}>
+                    <Button className='bg-main hover:bg-logoColor' onClick={()=> router.back()}>
                     <span><ArrowLeftCircle/></span>
                             Back
                     </Button>

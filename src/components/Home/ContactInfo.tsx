@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone, Mail } from "lucide-react"
 import { motion } from "framer-motion"
-import { FloatingDockDemo } from "./FloatingDockDemo"
+import { SocialComponent } from "../SocialComponent"
 
 export function ContactInfo() {
   const contactItems = [
@@ -47,7 +47,7 @@ export function ContactInfo() {
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Follow Us</h2>
           <div className="flex space-x-4">
-              <FloatingDockDemo/>
+              <SocialComponent/>
           </div>
         </div>
       </div>

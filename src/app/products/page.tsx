@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision'
-import { ProductsSection } from '@/components/ProductsSection'
+import { ProductsSection } from '@/components/Products/ProductsSection'
 
 const ProductsPage = () => {
     

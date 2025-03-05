@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { apiRequest } from '../../../store/api/DataHelper'
+import { SkeletonCard } from '../skeleton-card'
 
 const Categories = () => {
 
@@ -13,8 +14,16 @@ const Categories = () => {
     const { data: categories, isLoading, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => apiRequest("Categories/getAllCategories", "GET"),
-    });
+        staleTime: 0,
 
+    });
+   if(isLoading) {
+            return<>
+                {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonCard key={index} />
+                ))}
+            </>
+        }
 
 
     return (

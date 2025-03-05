@@ -1,88 +1,214 @@
-import React from "react";
-import {
-  IconArrowWaveRightUp,
-  IconBoxAlignRightFilled,
-  IconBoxAlignTopLeft,
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-  IconTableColumn,
-} from "@tabler/icons-react";
-import Image from 'next/image';
-import { BentoGrid, BentoGridItem } from "../ui/bento-grid";
-import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+"use client"
 
+import React, { useEffect, useState } from "react"
+import Image from "next/image"
+import { ArrowRight } from "lucide-react"
+
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export function Services() {
+  const [api, setApi] = React.useState<any>()
+  const [current, setCurrent] = React.useState(0)
+  const [count, setCount] = React.useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
+  // Check if mobile on mount and when window resizes
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
 
-    return (
-        <div>
-    <div className="mx-auto  mb-10 text-center">
-        <h2 className="font-bold text-5xl text-[#137E8C]">Services</h2>
-      </div>
-    <div className="mx-auto mb-[100px] grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-6 container transition">
-        {items.map((item, i) => (
-            <Card key={i} className="min-w-[200px] xs:w-full w-[250px] transition duration-500 rounded-lg shadow-lg hover:shadow-2xl shadow-lightColor p-0 hover:bg-gray-100 ">
-                <CardHeader className="p-0">
-                    <CardTitle className="rounded-lg">
-                        {item.header}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-2 font-bold px-2 pb-0 ">
-                    {item.title}
-                </CardContent>
-                <CardContent className="pt-0 mt-1 font-semibold text-sm  px-2 line-clamp-1">
-                    {item.description}
-                </CardContent>
-                <CardFooter className="pt-0 mt-1 font-semibold text-sm px-2 pb-2">
-                    <a target="_blank" className="bg-lightColor px-2 py-2 rounded-lg text-white" href="https://api.whatsapp.com/message/CI6MVAYVPTSUF1?autoload=1&app_absent=0">Contact Us</a>
-                </CardFooter>
-            </Card>
-        ))}
-    </div>
+    checkIfMobile()
+    window.addEventListener("resize", checkIfMobile)
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile)
+    }
+  }, [])
+
+  // Set up carousel
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
+
+  return (
+    <div className="py-16 px-4 md:px-6 bg-gradient-to-b from-white to-gray-50">
+      <div className="container mx-auto max-w-7xl">
+        <div className="mx-auto mb-12 text-center">
+          <h2 className="font-bold text-4xl md:text-5xl text-main bg-clip-text  bg-gradient-to-r from-green-600 to-green-800 mb-3">
+            Our Services
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Professional medical equipment maintenance and support for healthcare facilities
+          </p>
         </div>
-    
-    );
-}
 
-const Skeleton = () => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
-);
+        <Carousel
+          setApi={setApi}
+          className="w-full"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent className="-ml-4">
+            {items.map((item, i) => (
+              <CarouselItem key={i} className={cn("pl-4 md:basis-1/2 lg:basis-1/3", isMobile ? "basis-full" : "")}>
+                <div className="p-1 h-full">
+                  <Card className="overflow-hidden border border-gray-100 h-full transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px] bg-white rounded-xl">
+                    <div className="relative h-48 w-full overflow-hidden">
+                      {typeof item.header === "object" && React.isValidElement(item.header) ? (
+                        <div className="w-full h-full">
+                          {React.cloneElement(item.header, {
+                            className: "w-full h-full object-cover transition-transform duration-500 hover:scale-105",
+                          })}
+                        </div>
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-500">No Image</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    </div>
+
+                    <CardContent className="p-5">
+                      <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{item.title}</h3>
+                      {item.description && (
+                        <p className="text-gray-600 text-sm line-clamp-2 mb-4">{item.description}</p>
+                      )}
+                    </CardContent>
+
+                    <CardFooter className="p-5 pt-0">
+                      <a
+                        href="https://api.whatsapp.com/message/CI6MVAYVPTSUF1?autoload=1&app_absent=0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <Button className="w-full bg-main text-white group">
+                          Contact Us
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Button>
+                      </a>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <div className="flex items-center justify-center mt-8 gap-2">
+            <CarouselPrevious
+              variant="outline"
+              className="relative h-9 w-9 rounded-full border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+            />
+
+            <div className="flex items-center gap-1.5 mx-4">
+              {Array.from({ length: count }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === current ? "w-6 bg-blue-600" : "w-2 bg-blue-200 hover:bg-blue-300"
+                  }`}
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <CarouselNext
+              variant="outline"
+              className="relative h-9 w-9 rounded-full border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+            />
+          </div>
+        </Carousel>
+      </div>
+    </div>
+  )
+}
 
 const items = [
   {
     title: "Maintenance contracts for medical centers",
-    description: "",
-    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/handshake-close-up-executives_inbesr.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
-    icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
+    description: "Comprehensive service agreements to keep your medical facility running smoothly",
+    header: (
+      <Image
+        src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/handshake-close-up-executives_inbesr.jpg"
+        className="w-full h-full rounded-t-lg"
+        width={500}
+        height={300}
+        alt="Maintenance contracts"
+        unoptimized={true}
+      />
+    ),
   },
   {
     title: "Maintenance of all medical devices",
-    description: "",
-    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental_htu9ab.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
-    icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
+    description: "Expert servicing for all types of medical equipment to ensure optimal performance",
+    header: (
+      <Image
+        src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental_htu9ab.jpg"
+        className="w-full h-full rounded-t-lg"
+        width={500}
+        height={300}
+        alt="Medical device maintenance"
+        unoptimized={true}
+      />
+    ),
   },
   {
     title: "Maintenance of all dental handpieces",
-    description: "",
-    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental-2_ckejyz.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
-    icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
+    description: "Specialized care for dental handpieces to maintain precision and longevity",
+    header: (
+      <Image
+        src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/dental-2_ckejyz.jpg"
+        className="w-full h-full rounded-t-lg"
+        width={500}
+        height={300}
+        alt="Dental handpiece maintenance"
+        unoptimized={true}
+      />
+    ),
   },
   {
     title: "Dental chair maintenance",
-    description: "Join the quest for understanding and enlightenment.",
-    header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115007/freepik__upload__44998_ts1p2d.png" className="w-full h-full rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
-    icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
+    description: "Complete servicing of dental chairs to ensure patient comfort and operational reliability",
+    header: (
+      <Image
+        src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115007/freepik__upload__44998_ts1p2d.png"
+        className="w-full h-full rounded-t-lg"
+        width={500}
+        height={300}
+        alt="Dental chair maintenance"
+        unoptimized={true}
+      />
+    ),
   },
   {
     title: "X-ray room balancing and insulation",
-    description:
-      "",
-      header: <Image src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/Xray-room_d74qxu.jpg" className="w-full h-full  rounded-t-lg"  width={100} alt="Contract" height={100} unoptimized={true}/>,
-      icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
+    description: "Professional balancing and insulation services for X-ray rooms to ensure safety and compliance",
+    header: (
+      <Image
+        src="https://res.cloudinary.com/dqo1hj5qt/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1741115008/Xray-room_d74qxu.jpg"
+        className="w-full h-full rounded-t-lg"
+        width={500}
+        height={300}
+        alt="X-ray room services"
+        unoptimized={true}
+      />
+    ),
   },
-  
-];
+]
+

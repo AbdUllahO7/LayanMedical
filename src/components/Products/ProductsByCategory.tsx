@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { apiRequest } from "../../../store/api/DataHelper";
 import { BentoGrid } from "../ui/bento-grid";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { BackgroundGradient } from "../ui/background-gradient";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { Card } from "../ui/card";
+import { SkeletonCard } from "../skeleton-card";
 
 export function ProductsByCategory({ categoryId }: { categoryId: string }) {
     const [products, setProducts] = useState<any[]>([]);
@@ -61,7 +61,7 @@ export function ProductsByCategory({ categoryId }: { categoryId: string }) {
                     {products?.length > 0 ? (
                         products?.map((item) => (
                             <div key={item._id} className="h-full">
-                                <BackgroundGradient className="rounded-[22px] h-full p-4 sm:p-6 bg-white dark:bg-zinc-900 flex flex-col">
+                                <Card className="rounded-[22px] h-full p-4 sm:p-6 bg-white dark:bg-zinc-900 flex flex-col">
                                 <Link href={`/products/productDetails/${item._id}`} className="block relative h-48">
                                     <Image
                                     src={item.listImages[0]}
@@ -82,10 +82,10 @@ export function ProductsByCategory({ categoryId }: { categoryId: string }) {
                                     </p>
                                 </div>
                             
-                                <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-black mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
+                                <Button className="rounded-full pl-4 pr-4 py-1 text-white bg-main mt-4 text-xs font-bold dark:bg-zinc-800 self-start">
                                     <Link href="https://layandent.com/">Buy now</Link>
                                 </Button>
-                                </BackgroundGradient>
+                                </Card>
                             </div>
                         ))
                     ) : (

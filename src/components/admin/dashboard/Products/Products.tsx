@@ -9,6 +9,8 @@ import {  deleteProduct, fetchAllProducts } from '../../../../../store/admin/Pro
 import ProductsList from './ProductsList';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../../../../../store/api/DataHelper';
+import { SkeletonCard } from '@/components/skeleton-card';
+import { Plus } from 'lucide-react';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,6 +33,7 @@ const Products = () => {
   const { data: products, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => apiRequest("ProductsRoutes", "GET"),
+    staleTime: 0,
   });
 
 
@@ -87,13 +90,19 @@ const Products = () => {
         toast.toast({ title: 'Deletion failed', variant: 'destructive' });
       }
     };
-
+  if(isLoading) {
+          return<>
+              {Array.from({ length: 6 }).map((_, index) => (
+              <SkeletonCard key={index} />
+              ))}
+          </>
+      }
   return (
     <div className="w-full">
       <div className="flex justify-between w-full items-center">
         <h2 className="font-bold text-2xl">Products</h2>
-          <Button variant="outline" onClick={handleAddProductClick}>
-                Add New Product
+          <Button variant="outline" className='bg-main text-white duration-500' onClick={handleAddProductClick}>
+                Add New Product <Plus/> 
               </Button>
       </div>
          {/* List of products */}

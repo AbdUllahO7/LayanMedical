@@ -1,10 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
-import { ImagesSlider } from "./ui/images-slider";
+import { ImagesSlider } from "../ui/images-slider";
 import Link from "next/link";
 
-export function ImagesSliderDemo() {
+export function HeroSection() {
     const images = [
         "/assets/images/hero-1.jpg",
         "/assets/images/hero-2.jpg",

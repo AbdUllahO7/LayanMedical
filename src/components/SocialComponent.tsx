@@ -8,7 +8,7 @@ import {
 
 } from "@tabler/icons-react";
 
-export function FloatingDockDemo() {
+export function SocialComponent() {
     const links = [
         {
             title: "Facebook",

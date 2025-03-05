@@ -4,14 +4,23 @@ import { Checkbox } from "./ui/checkbox";
 import { Separator } from "./ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "../../store/api/DataHelper";
+import { SkeletonCard } from "./skeleton-card";
 
 
 function FilterComponent({ filters, handleFilter }) {
-    const { data: categories } = useQuery({
+    const { data: categories , isLoading } = useQuery({
         queryKey: ["categories"],
         queryFn: () => apiRequest("Categories/getAllCategories", "GET"),
+        staleTime: 0,
+
     });
-  
+    if(isLoading) {
+            return<>
+                {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonCard key={index} />
+                ))}
+            </>
+        }
     return (
         <div className="bg-background rounded-lg shadow-sm">
             <div className="p-4 border-b">
@@ -48,7 +57,6 @@ function FilterComponent({ filters, handleFilter }) {
             </div>
         </div>
     );
-  }
-  
-  export default FilterComponent;
-  
+}
+
+export default FilterComponent;
