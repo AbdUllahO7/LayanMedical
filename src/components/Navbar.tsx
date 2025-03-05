@@ -48,7 +48,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 ">
             {navItems.map((item) => (
               <NavItem
                 key={item.href}
@@ -67,7 +67,7 @@ export function Navbar() {
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {mobileMenuOpen ? (
-              <X className={scrolled ? "text-main" : "text-white"} />
+              <X className={scrolled ? "text-main" : "text-main"} />
             ) : (
               <MenuIcon className={scrolled ? "text-main" : "text-white"} />
             )}
@@ -156,7 +156,7 @@ function MobileMenu({
 }) {
   return (
     <motion.div
-      className={cn("fixed inset-0 bg-white z-40 flex flex-col p-6 pt-24", isOpen ? "block" : "hidden")}
+      className={cn("fixed inset-0 bg-white h-[100vh] z-40 flex flex-col p-6 pt-24", isOpen ? "block" : "hidden")}
       initial={{ opacity: 0, x: "100%" }}
       animate={{
         opacity: isOpen ? 1 : 0,
@@ -171,7 +171,7 @@ function MobileMenu({
         {navItems.map((item) => (
           <div key={item.href}>
             {item.children ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col bg-white">
                 <button
                   className="flex items-center justify-between py-3 border-b border-gray-100 text-gray-800 font-medium"
                   onClick={() => setActive(active === item.href ? null : item.href)}
@@ -208,16 +208,7 @@ function MobileMenu({
         ))}
       </nav>
 
-      <div className="mt-auto pt-6 border-t border-gray-100">
-        <Link
-          href="https://layandent.com/"
-          target="_blank"
-          className="flex items-center justify-center w-full py-3 px-4 bg-main text-white rounded-lg font-medium hover:bg-main/90 transition-colors"
-          onClick={() => setIsOpen(false)}
-        >
-          Visit Our Store
-        </Link>
-      </div>
+      
     </motion.div>
   )
 }

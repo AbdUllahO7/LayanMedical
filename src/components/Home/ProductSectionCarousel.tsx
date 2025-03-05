@@ -72,7 +72,6 @@ export default function ProductSectionCarousel({ showButton, showFilter }) {
     staleTime: 0,
   })
 
-  console.log(products)
 
   // Handle autoplay
   React.useEffect(() => {
