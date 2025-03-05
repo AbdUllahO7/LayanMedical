@@ -19,6 +19,7 @@ export function AnotherProductSection({ showButton, showFilter }) {
     const { data: products, isLoading } = useQuery({
         queryKey: ["products"],
         queryFn: () => apiRequest("ProductsRoutes", "GET"),
+        
     });
 
     const filteredProducts = useMemo(() => {

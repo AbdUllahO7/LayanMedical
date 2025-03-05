@@ -29,7 +29,10 @@ const ProductsList = ({ products, onEdit, onDelete }) => {
                 <Link className="bg-green-950 px-3 py-2 rounded-lg text-white" href={`/products/productDetails/${product._id}`}>
                     Details
                 </Link>
-                <Button className="bg-blue-950" onClick={() => onEdit(product)}>Edit</Button>
+                <Link href={`/admin/dashboard/AddProduct?edit=${product._id}`}>
+                    Edit
+                </Link>
+                {/* <Button className="bg-blue-950" onClick={() => onEdit(product)}>Edit</Button> */}
                 <Button className="bg-red-900 text-white transition-all" onClick={() => onDelete(product._id)}>Delete</Button>
             </div>
             </Card>

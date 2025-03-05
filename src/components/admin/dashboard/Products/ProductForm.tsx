@@ -75,6 +75,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             id="title" 
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
+            className='border-2 border-black bg-gray-400'
           />
         </div>
 
@@ -137,7 +138,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
       {/* Dialog Footer */}
       <DialogFooter>
-        <Button type="submit" disabled={imageLoadingState}>
+        <Button className='mb-10' type="submit" disabled={imageLoadingState}>
           {isEditMode ? 'Update Product' : 'Create Product'}
         </Button>
       </DialogFooter>
