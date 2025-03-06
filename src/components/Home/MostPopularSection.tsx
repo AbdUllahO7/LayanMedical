@@ -189,17 +189,21 @@ export function ModernProductCarousel({ showButton, showFilter }) {
       {/* Modern Products Carousel */}
       <div className="flex-1 flex flex-col items-center p-6 mt-10">
         <div className="mx-auto mb-10 text-center">
-          <h2 className="font-bold text-5xl text-main">Most Popular</h2>
+      <div className="mb-0 flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold tracking-tight pb-2 md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Most Popular
+          </h2>
+          <p className="mt-4 max-w-[700px] text-muted-foreground">
+            Explore our handpicked selection of extraordinary destinations 
+          </p>
           {showButton && (
-          <div className="mt-10">
-            <Link
-              href="/products"
-              className="font-bold text-xl hover:bg-[#0e6974] p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-main transition-all duration-300"
-            >
-              Show All
-            </Link>
-          </div>
-        )}
+            <div className="mx-auto mt-10    text-center">
+              <Link href="/category" className="font-bold text-xl hover:bg-logoColor p-2 pr-3 pl-3 text-white rounded-lg hover:text-white bg-main">
+                Show All
+              </Link>
+            </div>
+          )}
+        </div>           
         </div>
 
         <div
@@ -222,7 +226,7 @@ export function ModernProductCarousel({ showButton, showFilter }) {
                 exit="exit"
                 className="absolute inset-0 flex items-center justify-center p-4"
               >
-                <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div className="w-full max-w-4xl mx-auto flex min-h-[100vvh] flex-col md:flex-row items-center gap-8">
                   {/* Product Image */}
                   <div className="w-full md:w-1/2 relative h-[200px] md:h-[350px]">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#137E8C]/10 to-transparent rounded-2xl" />
@@ -245,12 +249,12 @@ export function ModernProductCarousel({ showButton, showFilter }) {
                       {filteredProducts[currentIndex]?.description}
                     </p>
                     <div className="mt-auto">
-                      <Button className="rounded-full px-6 py-2 text-white bg-main hover:bg-[#0e6974] transition-all duration-300 text-sm font-medium">
+                      <Button className="rounded-full mb-10 px-6 py-2 text-white bg-main hover:bg-[#0e6974] transition-all duration-300 text-sm font-medium">
                         <Link href={`/products/productDetails/${filteredProducts[currentIndex]?._id}`}>
                           View Details
                         </Link>
                       </Button>
-                      <Button className="rounded-full px-6 py-2 text-white bg-main hover:bg-gray-800 transition-all duration-300 text-sm font-medium ml-2">
+                      <Button className="rounded-full mb-10 px-6 py-2 text-white bg-main hover:bg-gray-800 transition-all duration-300 text-sm font-medium ml-2">
                         <Link href="https://layandent.com/">Buy Now</Link>
                       </Button>
                     </div>

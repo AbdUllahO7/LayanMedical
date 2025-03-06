@@ -109,7 +109,9 @@ export function ProductsSection({ showButton = true, showFilter = true }) {
         
         {/* Header */}
         <div className="mb-10 text-center">
-          <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-main mb-4">Latest Products</h2>
+          <h2 className="text-3xl font-bold tracking-tight pb-2 md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Latest Products
+          </h2>
           {showFilter && (
             <div className="md:hidden flex justify-center mt-4">
               <Sheet>
@@ -200,7 +202,7 @@ const ProductCard = ({ product }) => {
         <h3 className="font-medium text-lg line-clamp-1 mb-1 group-hover:text-main transition-colors">
           {product.title}
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{product.description}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">{product.description}</p>
 
         {product.categories?.[0]?.title && (
           <Badge variant="outline" className="mt-3">
