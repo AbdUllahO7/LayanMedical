@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, ChevronRight, ExternalLink, Maximize2, X } from "lucide-react"
+import { ArrowLeftCircle, ArrowRight, ChevronRight, ExternalLink, Maximize2, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 import { apiRequest } from "../../../store/api/DataHelper"
@@ -12,11 +12,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { useRouter } from "next/navigation"
 
 export function ProductDetailsSection({ productId }: { productId: string }) {
     const [activeImageIndex, setActiveImageIndex] = useState(0)
     const [lightboxOpen, setLightboxOpen] = useState(false)
     const [lightboxImage, setLightboxImage] = useState("")
+    const router = useRouter()
 
     const {
         data: selectedProduct,
@@ -99,7 +101,10 @@ export function ProductDetailsSection({ productId }: { productId: string }) {
             <ChevronRight className="h-4 w-4 mx-1" />
             <span className="text-foreground font-medium truncate max-w-[200px]">{selectedProduct?.title}</span>
             </nav>
-
+            <Button className='bg-main hover:bg-logoColor mb-3' onClick={()=> router.back()}>
+                <span><ArrowLeftCircle/></span>
+                        Back
+                </Button>
             <div className="flex flex-col lg:flex-row gap-12">
             {/* Product Images */}
             <div className="w-full lg:w-3/5 space-y-4">
