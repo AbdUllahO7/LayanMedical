@@ -3,6 +3,7 @@ export const apiRequest = async (endpoint: string, method: string = "GET", body?
         method,
         headers: {
             "Content-Type": "application/json",
+            "x-api-key" : process.env.NEXT_PUBLIC_API_KEY
         },
         body: body ? JSON.stringify(body) : null,
         });
